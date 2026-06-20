@@ -44,6 +44,11 @@
         /* Thèmes alternatifs conservés pour les paramètres */
         [data-theme="dark"] { --bg: #121212; --surface: #1E1E1E; --surface-hover: #2C2C2C; --text: #E0E0E0; --text-muted: #9E9E9E; --primary: #BB86FC; --secondary: #03DAC6; --border: #333333; --card-shadow: 0 4px 6px rgba(0,0,0,0.3); --header-text: #E0E0E0; }
         [data-theme="light"] { --bg: #F5F5F5; --surface: #FFFFFF; --surface-hover: #E0E0E0; --text: #121212; --text-muted: #666666; --primary: #6200EE; --secondary: #018786; --border: #DDDDDD; --card-shadow: 0 4px 6px rgba(0,0,0,0.1); --header-text: #121212; }
+        [data-theme="ocean-ice"] { --bg: linear-gradient(135deg, #1B4965 0%, #5FA8D3 100%); --surface: #CAE9FF; --surface-hover: #BEE9E8; --text: #1B4965; --text-muted: #62B6CB; --primary: #1B4965; --secondary: #62B6CB; --border: rgba(27,73,101,0.2); --card-shadow: 0 10px 25px rgba(27,73,101,0.15); --header-text: #CAE9FF; }
+        [data-theme="deep-blue"] { --bg: #0D1B2A; --surface: #1B263B; --surface-hover: #415A77; --text: #E0E1DD; --text-muted: #778DA9; --primary: #778DA9; --secondary: #415A77; --border: #415A77; --card-shadow: 0 10px 25px rgba(0,0,0,0.3); --header-text: #E0E1DD; }
+        [data-theme="terracotta"] { --bg: #EEE2DF; --surface: #F5EBE0; --surface-hover: #EED7C5; --text: #B36A5E; --text-muted: #C89F9C; --primary: #C97C5D; --secondary: #C89F9C; --border: rgba(179,106,94,0.2); --card-shadow: 0 10px 25px rgba(179,106,94,0.15); --header-text: #B36A5E; }
+        [data-theme="neutral-nude"] { --bg: #EDEDE9; --surface: #F5EBE0; --surface-hover: #E3D5CA; --text: #6B5E55; --text-muted: #D5BDAF; --primary: #D5BDAF; --secondary: #D6CCC2; --border: #D6CCC2; --card-shadow: 0 10px 25px rgba(214,204,194,0.2); --header-text: #6B5E55; }
+        [data-theme="forest"] { --bg: #DAD7CD; --surface: #F2F1ED; --surface-hover: #A3B18A; --text: #344E41; --text-muted: #588157; --primary: #3A5A40; --secondary: #588157; --border: rgba(52,78,65,0.2); --card-shadow: 0 10px 25px rgba(52,78,65,0.15); --header-text: #344E41; }
 
         /* RESET & BASE */
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -279,6 +284,7 @@
         };
 
         var defaultC = {
+            fontSize: 16,
             dayBudget: 20000,
             coursesMo: 600000,
             savings: 1000000,
@@ -370,7 +376,10 @@
                 }
                 applyTheme();
                 updateTimeRing();
-                nav(State.activePage);
+                
+                // Restauration de la dernière page visitée
+                var savedPage = localStorage.getItem('lastActivePageVE') || State.activePage;
+                nav(savedPage);
             }).catch(function(err) {
                 console.error("Load Error", err);
                 alert("Erreur de chargement: " + err.message);
@@ -401,6 +410,8 @@
         function applyTheme() {
             // Forcer le thème nature-vibrant s'il n'est pas défini, ou appliquer celui sauvegardé
             document.documentElement.setAttribute('data-theme', State.C.theme || 'nature-vibrant');
+            // Application de la taille de police globale
+            document.documentElement.style.fontSize = (State.C.fontSize || 16) + 'px';
         }
 
         /**
@@ -408,6 +419,9 @@
          */
         function nav(page) {
             State.activePage = page;
+            
+            // Mémorisation de la page actuelle dans le cache local
+            localStorage.setItem('lastActivePageVE', page);
             
             // Sidebar desktop active state
             var links = document.querySelectorAll('.sidebar a');
@@ -685,9 +699,23 @@
             try { 
                 var h = [];
                 h.push("<div class='card'><h3>Paramètres</h3>");
+                
+                // --- CONTRÔLE DE LA TAILLE DE POLICE ---
+                h.push("<label style='font-weight:bold; margin-bottom:8px; display:block;'>Taille du texte:</label>");
+                h.push("<div class='flex-between' style='background:rgba(255,255,255,0.5); padding:10px 15px; border-radius:16px; margin-bottom:20px; border:1px solid var(--border);'>");
+                h.push("<button class='outline' style='padding:5px 15px; border-radius:10px;' onclick='changeFontSize(-1)'>A-</button>");
+                h.push("<strong id='fs-display' class='mono' style='font-size:1.1rem;'>" + (State.C.fontSize || 16) + " px</strong>");
+                h.push("<button class='outline' style='padding:5px 15px; border-radius:10px;' onclick='changeFontSize(1)'>A+</button>");
+                h.push("</div>");
+
                 h.push("<label style='font-weight:bold; margin-bottom:8px; display:block;'>Thème de l'application:</label>");
                 h.push("<select id='set-theme' onchange='updateTheme(this.value)' style='font-size:1.1rem; padding:15px;'>");
-                h.push("<option value='nature-vibrant' "+(State.C.theme==='nature-vibrant'?'selected':'')+">Nature Vibrant (Actuel)</option>");
+                h.push("<option value='nature-vibrant' "+(State.C.theme==='nature-vibrant'?'selected':'')+">Nature Vibrant (Bleu/Vert)</option>");
+                h.push("<option value='ocean-ice' "+(State.C.theme==='ocean-ice'?'selected':'')+">Ocean Ice (Océan/Cyan)</option>");
+                h.push("<option value='deep-blue' "+(State.C.theme==='deep-blue'?'selected':'')+">Deep Blue (Bleu Nuit/Gris)</option>");
+                h.push("<option value='terracotta' "+(State.C.theme==='terracotta'?'selected':'')+">Terracotta (Terre/Argile)</option>");
+                h.push("<option value='neutral-nude' "+(State.C.theme==='neutral-nude'?'selected':'')+">Neutral Nude (Beige/Douceur)</option>");
+                h.push("<option value='forest' "+(State.C.theme==='forest'?'selected':'')+">Forest (Vert Forêt)</option>");
                 h.push("<option value='dark' "+(State.C.theme==='dark'?'selected':'')+">Sombre Classique</option>");
                 h.push("<option value='light' "+(State.C.theme==='light'?'selected':'')+">Clair Minimaliste</option>");
                 h.push("</select>");
@@ -769,6 +797,16 @@
         function updateConfig(key, val) {
             State.C[key] = Number(val);
             triggerSave();
+        }
+
+        // Fonction d'ajustement dynamique de la police
+        function changeFontSize(delta) {
+            State.C.fontSize = (State.C.fontSize || 16) + delta;
+            if (State.C.fontSize < 12) State.C.fontSize = 12; // Limite min
+            if (State.C.fontSize > 26) State.C.fontSize = 26; // Limite max
+            applyTheme();
+            triggerSave();
+            document.getElementById('fs-display').innerText = State.C.fontSize + " px";
         }
 
         /**
