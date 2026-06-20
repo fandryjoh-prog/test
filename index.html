@@ -2,86 +2,68 @@
 <html lang="fr" data-theme="nature-vibrant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vie Équilibrée - Fandry</title>
-    
+    <!-- Polices -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&family=DM+Mono&display=swap" rel="stylesheet">
     
-    <!-- FIREBASE COMPAT SDK (Strictement asynchrone classique, pas de module) -->
+    <!-- FIREBASE COMPAT SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <style>
-        /* THEMES & VARIABLES CSS */
         :root {
             --font-title: 'DM Serif Display', serif;
             --font-text: 'DM Sans', sans-serif;
             --font-mono: 'DM Mono', monospace;
             --sidebar-width: 250px;
-            --right-panel-width: 350px; /* Élargi pour le Split-Screen */
+            --right-panel-width: 350px; /* Élargi pour Option 2 */
+            --radius: 24px;
             --transition: all 0.3s ease;
+            --card-shadow: 0 8px 24px rgba(0,0,0,0.06);
         }
 
-        /* PALETTE DEMANDÉE : Nature Vibrant */
+        /* THÈMES ACTUELS ET NOUVEAUX */
+        [data-theme="dark"] { --bg: #121212; --surface: #1E1E1E; --surface-hover: #2C2C2C; --text: #E0E0E0; --text-muted: #9E9E9E; --primary: #BB86FC; --secondary: #03DAC6; --accent: #CF6679; --border: #333333; --gold: #FFD700; --green: #4CAF50; --danger: #F44336; --header-text: #FFFFFF; }
+        [data-theme="light"] { --bg: #F5F5F5; --surface: #FFFFFF; --surface-hover: #E0E0E0; --text: #121212; --text-muted: #666666; --primary: #6200EE; --secondary: #018786; --accent: #B00020; --border: #DDDDDD; --gold: #FBC02D; --green: #388E3C; --danger: #D32F2F; --header-text: #121212; }
+        
+        /* VOTRE THÈME PRINCIPAL : Nature Vibrant */
         [data-theme="nature-vibrant"] {
-            --bg: linear-gradient(135deg, #05668d 0%, #427aa1 100%);
+            --bg: linear-gradient(135deg, #05668d, #427aa1);
             --surface: #ebf2fa;
             --surface-hover: #ffffff;
             --text: #05668d;
             --text-muted: #427aa1;
             --primary: #679436;
             --secondary: #a5be00;
-            --accent: #427aa1;
-            --border: rgba(5, 102, 141, 0.15);
-            --gold: #a5be00;
+            --accent: #FF9F1C;
+            --border: rgba(66, 122, 161, 0.2);
+            --gold: #FFD166;
             --green: #679436;
-            --danger: #e63946;
-            --card-shadow: 0 10px 25px rgba(5, 102, 141, 0.25);
+            --danger: #E63946;
             --header-text: #ebf2fa;
         }
 
-        /* Thèmes alternatifs conservés pour les paramètres */
-        [data-theme="dark"] { --bg: #121212; --surface: #1E1E1E; --surface-hover: #2C2C2C; --text: #E0E0E0; --text-muted: #9E9E9E; --primary: #BB86FC; --secondary: #03DAC6; --border: #333333; --card-shadow: 0 4px 6px rgba(0,0,0,0.3); --header-text: #E0E0E0; }
-        [data-theme="light"] { --bg: #F5F5F5; --surface: #FFFFFF; --surface-hover: #E0E0E0; --text: #121212; --text-muted: #666666; --primary: #6200EE; --secondary: #018786; --border: #DDDDDD; --card-shadow: 0 4px 6px rgba(0,0,0,0.1); --header-text: #121212; }
-        [data-theme="ocean-ice"] { --bg: linear-gradient(135deg, #1B4965 0%, #5FA8D3 100%); --surface: #CAE9FF; --surface-hover: #BEE9E8; --text: #1B4965; --text-muted: #62B6CB; --primary: #1B4965; --secondary: #62B6CB; --border: rgba(27,73,101,0.2); --card-shadow: 0 10px 25px rgba(27,73,101,0.15); --header-text: #CAE9FF; }
-        [data-theme="deep-blue"] { --bg: #0D1B2A; --surface: #1B263B; --surface-hover: #415A77; --text: #E0E1DD; --text-muted: #778DA9; --primary: #778DA9; --secondary: #415A77; --border: #415A77; --card-shadow: 0 10px 25px rgba(0,0,0,0.3); --header-text: #E0E1DD; }
-        [data-theme="terracotta"] { --bg: #EEE2DF; --surface: #F5EBE0; --surface-hover: #EED7C5; --text: #B36A5E; --text-muted: #C89F9C; --primary: #C97C5D; --secondary: #C89F9C; --border: rgba(179,106,94,0.2); --card-shadow: 0 10px 25px rgba(179,106,94,0.15); --header-text: #B36A5E; }
-        [data-theme="neutral-nude"] { --bg: #EDEDE9; --surface: #F5EBE0; --surface-hover: #E3D5CA; --text: #6B5E55; --text-muted: #D5BDAF; --primary: #D5BDAF; --secondary: #D6CCC2; --border: #D6CCC2; --card-shadow: 0 10px 25px rgba(214,204,194,0.2); --header-text: #6B5E55; }
-        [data-theme="forest"] { --bg: #DAD7CD; --surface: #F2F1ED; --surface-hover: #A3B18A; --text: #344E41; --text-muted: #588157; --primary: #3A5A40; --secondary: #588157; --border: rgba(52,78,65,0.2); --card-shadow: 0 10px 25px rgba(52,78,65,0.15); --header-text: #344E41; }
+        /* NOUVEAUX THÈMES DEMANDÉS */
+        [data-theme="ocean-ice"] { --bg: #1B4965; --surface: #CAE9FF; --surface-hover: #BEE9E8; --text: #1B4965; --text-muted: #5FA8D3; --primary: #62B6CB; --secondary: #5FA8D3; --accent: #BEE9E8; --border: rgba(98, 182, 203, 0.3); --gold: #FFD166; --green: #62B6CB; --danger: #E63946; --header-text: #CAE9FF; }
+        [data-theme="deep-blue"] { --bg: #0D1B2A; --surface: #1B263B; --surface-hover: #415A77; --text: #E0E1DD; --text-muted: #778DA9; --primary: #778DA9; --secondary: #415A77; --accent: #E0E1DD; --border: rgba(119, 141, 169, 0.2); --gold: #E0E1DD; --green: #415A77; --danger: #E63946; --header-text: #E0E1DD; }
+        [data-theme="terracotta"] { --bg: #B36A5E; --surface: #EEE2DF; --surface-hover: #EED7C5; --text: #B36A5E; --text-muted: #C89F9C; --primary: #C97C5D; --secondary: #C89F9C; --accent: #EED7C5; --border: rgba(200, 159, 156, 0.3); --gold: #C97C5D; --green: #C89F9C; --danger: #B36A5E; --header-text: #EEE2DF; }
+        [data-theme="neutral-nude"] { --bg: #D5BDAF; --surface: #EDEDE9; --surface-hover: #F5EBE0; --text: #D5BDAF; --text-muted: #D6CCC2; --primary: #E3D5CA; --secondary: #D6CCC2; --accent: #F5EBE0; --border: rgba(214, 204, 194, 0.3); --gold: #E3D5CA; --green: #D6CCC2; --danger: #D5BDAF; --header-text: #EDEDE9; }
+        [data-theme="forest"] { --bg: #344E41; --surface: #DAD7CD; --surface-hover: #A3B18A; --text: #344E41; --text-muted: #588157; --primary: #3A5A40; --secondary: #588157; --accent: #A3B18A; --border: rgba(88, 129, 87, 0.3); --gold: #A3B18A; --green: #588157; --danger: #3A5A40; --header-text: #DAD7CD; }
 
-        /* RESET & BASE */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: var(--font-text); 
-            background: var(--bg); 
-            background-attachment: fixed; 
-            color: var(--text); 
-            overflow-x: hidden; 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh; 
-        }
+        body { font-family: var(--font-text); background: var(--bg); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; font-size: 16px; }
         h1, h2, h3 { font-family: var(--font-title); font-weight: normal; }
         .mono { font-family: var(--font-mono); }
         
-        button { 
-            cursor: pointer; border: none; outline: none; background: var(--primary); 
-            color: #ffffff; padding: 12px 20px; border-radius: 16px; font-weight: bold; 
-            font-family: var(--font-text); transition: var(--transition); 
-            box-shadow: 0 4px 10px rgba(103, 148, 54, 0.3);
-        }
+        button { cursor: pointer; border: none; outline: none; background: var(--primary); color: #ffffff; padding: 10px 16px; border-radius: 14px; font-weight: bold; font-family: var(--font-text); transition: var(--transition); }
         button:hover { opacity: 0.9; transform: translateY(-2px); }
-        button.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
+        button.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
         
-        input, select, textarea { 
-            width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 16px; 
-            border: 1px solid var(--border); background: rgba(255,255,255,0.7); 
-            color: var(--text); font-family: var(--font-text); transition: var(--transition); 
-        }
-        input:focus { outline: none; border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 3px rgba(103, 148, 54, 0.2); }
-        
-        /* LAYOUT */
+        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.6); color: var(--text); font-family: var(--font-text); transition: var(--transition); }
+        input:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+
         #app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; }
         
         .sidebar { width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; overflow-y: auto; }
@@ -92,37 +74,23 @@
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { height: 70px; background: transparent; color: var(--header-text); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
         .topbar button.outline { border-color: var(--header-text); color: var(--header-text); }
-        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 110px; } /* Espace pour la bottom nav */
+        
+        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; } /* Espace pour bottom nav */
 
-        .right-panel { width: var(--right-panel-width); background: var(--surface); border-left: 1px solid var(--border); padding: 25px; overflow-y: auto; display: none; }
-        @media (min-width: 1024px) { .right-panel { display: block; } } /* Activé plus tôt (Laptops/Desktops) pour le Split-Screen */
+        /* PANNEAU DROIT - SPLIT SCREEN OPTION 2 */
+        .right-panel { width: var(--right-panel-width); background: var(--surface); border-left: 1px solid var(--border); padding: 20px; overflow-y: auto; display: none; }
+        /* Déclenchement sur écran large */
+        @media (min-width: 1024px) { 
+            .right-panel { display: block; } 
+        }
 
-        /* NAVIGATION FLOTTANTE MOBILE */
-        .bottom-nav { 
-            display: none; background: var(--surface); border-radius: 35px; 
-            margin: 15px; box-shadow: var(--card-shadow); padding: 8px 15px; 
-            align-items: center; justify-content: space-between; position: fixed; 
-            bottom: 0; left: 0; right: 0; z-index: 100; border: 1px solid rgba(255,255,255,0.5); 
-            backdrop-filter: blur(10px); 
-        }
-        .bottom-nav button { 
-            background: transparent; color: var(--text-muted); font-size: 1.4rem; 
-            padding: 10px; border-radius: 20px; flex: 1; display: flex; 
-            justify-content: center; align-items: center; box-shadow: none;
-        }
-        .bottom-nav button:hover, .bottom-nav button.active { 
-            color: var(--primary); background: rgba(103, 148, 54, 0.1); transform: none; 
-        }
-        /* Le gros bouton central (FAB) */
-        .bottom-nav .fab { 
-            background: linear-gradient(135deg, var(--secondary), var(--primary)); 
-            color: white; width: 64px; height: 64px; max-width: 64px; 
-            border-radius: 50%; transform: translateY(-25px); 
-            box-shadow: 0 10px 20px rgba(103, 148, 54, 0.4); 
-            border: 5px solid #427aa1; font-size: 1.8rem; 
-            display: flex; align-items: center; justify-content: center;
-        }
-        .bottom-nav .fab:hover { transform: translateY(-28px) scale(1.05); }
+        .bottom-nav { display: none; background: var(--surface); border-radius: 35px; margin: 15px; box-shadow: var(--card-shadow); padding: 8px 15px; align-items: center; justify-content: space-between; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px); }
+        .bottom-nav button { background: transparent; color: var(--text-muted); font-size: 1.4rem; padding: 10px; border-radius: 20px; flex: 1; display: flex; justify-content: center; align-items: center; }
+        .bottom-nav button:hover, .bottom-nav button.active { color: var(--primary); background: rgba(103, 148, 54, 0.1); transform: none; }
+        
+        /* Le Gros Bouton FAB Central */
+        .bottom-nav .fab { background: linear-gradient(135deg, var(--secondary), var(--primary)); color: white; width: 64px; height: 64px; max-width: 64px; border-radius: 50%; transform: translateY(-25px); box-shadow: 0 10px 20px rgba(103, 148, 54, 0.4); border: 5px solid #427aa1; font-size: 1.8rem; }
+        .bottom-nav .fab:hover { transform: translateY(-28px) scale(1.05); opacity: 1; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
@@ -130,12 +98,7 @@
             .topbar h2 { font-size: 1.2rem; }
         }
 
-        /* COMPONENTS */
-        .card { 
-            background: var(--surface); border-radius: 24px; padding: 20px; 
-            margin-bottom: 20px; border: none; box-shadow: var(--card-shadow); 
-            position: relative; overflow: hidden; 
-        }
+        .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 20px; border: none; box-shadow: var(--card-shadow); position: relative; overflow: hidden; }
         .card h3 { margin-bottom: 15px; padding-bottom: 5px; color: var(--text); font-weight: bold; font-family: var(--font-text); font-size: 1.1rem; }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -144,173 +107,414 @@
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         .text-center { text-align: center; }
         
-        /* Strip Calendrier */
         .calendar-strip { display: flex; overflow-x: auto; padding-bottom: 15px; gap: 12px; scrollbar-width: none; }
         .calendar-strip::-webkit-scrollbar { display: none; }
-        .day-box { 
-            min-width: 55px; text-align: center; padding: 12px 5px; border-radius: 18px; 
-            background: rgba(235, 242, 250, 0.2); border: 1px solid rgba(255,255,255,0.3); 
-            cursor: pointer; color: var(--header-text); backdrop-filter: blur(5px); transition: var(--transition); 
-        }
-        .day-box.active { 
-            background: var(--surface); color: var(--text); font-weight: bold; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-color: var(--surface); transform: scale(1.05); 
-        }
+        .day-box { min-width: 55px; text-align: center; padding: 12px 5px; border-radius: 18px; background: rgba(235, 242, 250, 0.2); border: 1px solid rgba(255,255,255,0.3); cursor: pointer; color: var(--header-text); font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.2); backdrop-filter: blur(5px); transition: var(--transition); }
+        .day-box.active { background: var(--surface); color: var(--text); font-weight: bold; transform: scale(1.05); }
         .day-box .dot { width: 6px; height: 6px; background: var(--secondary); border-radius: 50%; margin: 5px auto 0; display: none; }
         .day-box.has-data .dot { display: block; }
 
-        /* Progress Bar */
-        .progress-bar { height: 14px; background: rgba(5, 102, 141, 0.1); border-radius: 7px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), var(--primary)); width: 0%; transition: width 0.5s ease; border-radius: 7px; }
+        .progress-bar { height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.5s ease; border-radius: 5px; }
 
-        /* Messages */
-        .error-msg { color: var(--danger); background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 16px; border: 1px solid var(--danger); margin-bottom: 15px; }
-        .success-msg { color: var(--green); background: rgba(103, 148, 54, 0.1); padding: 15px; border-radius: 16px; border: 1px solid var(--green); margin-bottom: 15px; }
+        /* Éléments visuels style Option 2 */
+        .icon-row { display: flex; justify-content: space-around; margin-bottom: 20px; }
+        .icon-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--surface); display: flex; justify-content: center; align-items: center; box-shadow: var(--card-shadow); font-size: 1.5rem; color: var(--primary); }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 10px solid var(--primary); border-top-color: var(--secondary); border-right-color: var(--accent); margin: 0 auto 10px; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        
+        /* Widget Tâches Split Screen */
+        .task-item { background: rgba(255,255,255,0.8); padding: 10px; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; font-size: 0.9em; }
+        .task-item::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; background: var(--primary); }
+        .task-item.iscale::before { background: var(--text-muted); }
 
-        /* Auth Screen */
-        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: var(--bg); }
-        .auth-box { background: var(--surface); padding: 40px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; box-shadow: var(--card-shadow); }
+        .error-msg { color: var(--danger); background: rgba(230, 57, 70, 0.1); padding: 10px; border-radius: 8px; border: 1px solid var(--danger); margin-bottom: 15px; }
+        
+        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .auth-box { background: var(--surface); padding: 40px; border-radius: var(--radius); width: 100%; max-width: 400px; text-align: center; box-shadow: var(--card-shadow); }
     </style>
 </head>
 <body>
 
-    <!-- AUTHENTIFICATION -->
     <div id="auth-screen">
         <div class="auth-box">
-            <h1 style="color: var(--text); margin-bottom: 10px;">Vie Équilibrée</h1>
+            <h1 style="color: var(--primary); margin-bottom: 5px;">Vie Équilibrée</h1>
             <p style="margin-bottom: 30px; color: var(--text-muted);">Connexion sécurisée</p>
-            <input type="email" id="auth-email" placeholder="Email (ex: fandryjoh@gmail.com)">
+            <input type="email" id="auth-email" placeholder="Email">
             <input type="password" id="auth-pwd" placeholder="Mot de passe">
-            <button onclick="appLogin()" style="width: 100%; margin-bottom: 15px; padding: 14px; font-size: 1.1rem;">Se connecter</button>
+            <button onclick="appLogin()" style="width: 100%; margin-bottom: 10px; padding: 12px;">Se connecter</button>
             <div id="auth-error" class="error-msg" style="display: none;"></div>
         </div>
     </div>
 
-    <!-- APPLICATION PRINCIPALE -->
     <div id="app-container" style="display: none;">
         
-        <!-- SIDEBAR (Desktop) -->
+        <!-- SIDEBAR GAUCHE -->
         <nav class="sidebar">
             <div style="padding: 0 20px 20px;">
-                <h2 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 5px;">Vie Équilibrée</h2>
-                <div style="font-size: 0.85em; color: var(--text-muted); background: rgba(5, 102, 141, 0.1); padding: 5px 10px; border-radius: 10px; display: inline-block;" id="user-chip"></div>
+                <h2 style="color: var(--primary); font-size: 1.5rem;">Vie Équilibrée</h2>
+                <div style="font-size: 0.8em; color: var(--text-muted);" id="user-chip"></div>
             </div>
             <h4>Quotidien</h4>
-            <a href="#" onclick="nav('jour')" id="nav-jour">🏠 Jour</a>
-            <a href="#" onclick="nav('semaine')" id="nav-semaine">📅 Semaine</a>
-            <a href="#" onclick="nav('mois')" id="nav-mois">📊 Mois</a>
+            <a href="#" onclick="nav('jour')" id="nav-jour">Jour</a>
+            <a href="#" onclick="nav('mois')" id="nav-mois">Mois</a>
             <h4>Finances</h4>
-            <a href="#" onclick="nav('courses')" id="nav-courses">🛒 Courses</a>
-            <a href="#" onclick="nav('revenus')" id="nav-revenus">💰 Revenus & Fonds</a>
-            <a href="#" onclick="nav('stats')" id="nav-stats">📈 Statistiques</a>
+            <a href="#" onclick="nav('courses')" id="nav-courses">Courses</a>
             <h4>Gestion</h4>
-            <a href="#" onclick="nav('taches')" id="nav-taches">✅ Tâches</a>
-            <a href="#" onclick="nav('objectifs')" id="nav-objectifs">🎯 Objectifs</a>
-            <a href="#" onclick="nav('journal')" id="nav-journal">📝 Journal</a>
-            <a href="#" onclick="nav('bienetre')" id="nav-bienetre">🧘 Bien-être</a>
-            <a href="#" onclick="nav('planning')" id="nav-planning">⏰ Planning</a>
+            <a href="#" onclick="nav('taches')" id="nav-taches">Tâches</a>
+            <a href="#" onclick="nav('bienetre')" id="nav-bienetre">Bien-être</a>
             <h4>Compte</h4>
-            <a href="#" onclick="nav('settings')" id="nav-settings">⚙️ Paramètres</a>
-            <a href="#" onclick="nav('admin')" id="nav-admin" style="display:none;">🔒 Admin</a>
-            <a href="#" onclick="appLogout()" style="margin-top: 20px; color: var(--danger);">Déconnexion</a>
+            <a href="#" onclick="nav('settings')" id="nav-settings">Paramètres</a>
+            <a href="#" onclick="appLogout()" style="margin-top:20px; color:var(--danger);">Déconnexion</a>
         </nav>
 
         <div class="main-wrapper">
             <!-- TOPBAR -->
             <header class="topbar">
-                <div class="flex-between" style="width: 220px;">
-                    <button class="outline" onclick="changeMonth(-1)" style="padding: 8px 15px; border-radius: 12px; color: white; border-color: rgba(255,255,255,0.5);">‹</button>
-                    <h3 id="current-month-display" style="font-family: var(--font-text); font-weight: bold; font-size: 1.1rem;">Juin 2026</h3>
-                    <button class="outline" onclick="changeMonth(1)" style="padding: 8px 15px; border-radius: 12px; color: white; border-color: rgba(255,255,255,0.5);">›</button>
+                <div class="flex-between" style="width: 200px;">
+                    <button class="outline" onclick="changeMonth(-1)">‹</button>
+                    <h3 id="current-month-display">Juin 2026</h3>
+                    <button class="outline" onclick="changeMonth(1)">›</button>
                 </div>
                 <div class="flex-between">
                     <div id="sync-status" style="margin-right: 15px; font-size: 0.8em; opacity: 0.8;">Sync ✓</div>
-                    <svg width="45" height="45" viewBox="0 0 40 40">
-                        <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4"/>
-                        <circle id="day-progress-ring" cx="20" cy="20" r="16" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-dasharray="100 100" stroke-dashoffset="100" transform="rotate(-90 20 20)"/>
-                    </svg>
                 </div>
             </header>
 
-            <!-- CONTENT -->
+            <!-- ZONE DE CONTENU CENTRAL -->
             <main class="content-area" id="main-content">
-                <!-- Rendu dynamique ici -->
+                <!-- Rendu JS dynamique -->
             </main>
         </div>
 
-        <!-- RIGHT PANEL (Desktop > 1200px) -->
         <aside class="right-panel" id="right-panel">
-            <!-- Rendu dynamique des widgets ici -->
+            <!-- Rendu JS des widgets de résumé -->
         </aside>
 
-        <!-- BOTTOM NAV FLOTTANTE (Mobile) -->
+        <!-- NAVIGATION MOBILE FLOTTANTE -->
         <nav class="bottom-nav">
-            <button onclick="nav('jour')" id="mob-jour">🏠</button>
+            <button onclick="nav('jour')" id="mob-jour">📅</button>
             <button onclick="nav('taches')" id="mob-taches">✅</button>
-            <button class="fab" onclick="nav('jour')">⚡</button>
-            <button onclick="nav('revenus')" id="mob-revenus">💰</button>
+            <button class="fab" onclick="nav('jour')">🌟</button>
+            <button onclick="nav('mois')" id="mob-mois">📊</button>
             <button onclick="nav('settings')" id="mob-settings">⚙️</button>
         </nav>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
     <script>
-        /**
-         * WIDGETS DU PANNEAU DROIT (Version Desktop - Split-Screen Option 2)
-         */
-        function renderRightPanel() {
-            var rp = document.getElementById('right-panel');
-            if (!rp) return;
+        var firebaseConfig = {
+            apiKey: "AIzaSyAdfIiIMRevlNcyNhueJq2fzRdD53XBT1I",
+            authDomain: "mon-outil-budget.firebaseapp.com",
+            projectId: "mon-outil-budget",
+            storageBucket: "mon-outil-budget.firebasestorage.app",
+            messagingSenderId: "528991480334",
+            appId: "1:528991480334:web:2bf07bf807e2f9c148aa5f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var auth = firebase.auth();
+        var db = firebase.firestore();
+
+        var State = {
+            uid: null,
+            email: null,
+            activePage: 'jour',
+            activeDate: new Date(),
+            D: {}, 
+            C: {}  
+        };
+
+        var defaultC = {
+            dayBudget: 20000,
+            coursesMo: 600000,
+            savings: 1000000,
+            incRows: [{n: "Revenus", v: 0}],
+            habitRows: ["Méditation", "Sport", "Lecture", "Eau"],
+            theme: "nature-vibrant",
+            fontSize: 16
+        };
+
+        var saveTimeout = null;
+
+        function safeStr(str) { return str ? String(str).replace(/'/g, "\\'") : ""; }
+        function fmtAr(num) { return isNaN(num) ? "0 Ar" : Number(num).toLocaleString('fr-FR') + " Ar"; }
+        function getMonthKey(date) { var y = date.getFullYear(); var m = date.getMonth() + 1; return y + "-" + (m < 10 ? "0" + m : m); }
+        
+        function initMonthData(key) {
+            if (!State.D[key]) State.D[key] = { days: {}, courses: [] };
+            return State.D[key];
+        }
+        function getDayData(dayInt) {
+            var mk = getMonthKey(State.activeDate);
+            var md = initMonthData(mk);
+            if (!md.days[dayInt]) md.days[dayInt] = { spendings: [], habits: [] };
+            return md.days[dayInt];
+        }
+
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                State.uid = user.uid;
+                State.email = user.email;
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.getElementById('user-chip').innerText = user.email;
+                loadData();
+            } else {
+                document.getElementById('auth-screen').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+            }
+        });
+
+        function appLogin() {
+            var e = document.getElementById('auth-email').value;
+            var p = document.getElementById('auth-pwd').value;
+            auth.signInWithEmailAndPassword(e, p).catch(function(err) {
+                var errDiv = document.getElementById('auth-error');
+                errDiv.innerText = err.message;
+                errDiv.style.display = 'block';
+            });
+        }
+        function appLogout() { auth.signOut(); }
+
+        function loadData() {
+            db.collection("users").doc(State.uid).collection("data").doc("main").get().then(function(doc) {
+                if (doc.exists) {
+                    var data = doc.data();
+                    State.C = data.C || JSON.parse(JSON.stringify(defaultC));
+                    State.D = data.D || {};
+                } else {
+                    State.C = JSON.parse(JSON.stringify(defaultC));
+                    State.D = {};
+                }
+                applyTheme();
+                
+                // FIX CRITIQUE : Contournement du blocage iframe
+                var lastPage = 'jour';
+                try {
+                    lastPage = localStorage.getItem('vieEqLastPage') || 'jour';
+                } catch(e) {
+                    console.warn("localStorage bloqué, retour à 'jour'");
+                }
+                nav(lastPage);
+                
+            }).catch(function(err) {
+                var c = document.getElementById('main-content');
+                c.innerHTML = "<div class='error-msg'>Erreur de base de données: " + err.message + "</div>";
+            });
+        }
+
+        function triggerSave() {
+            document.getElementById('sync-status').innerText = "Syncing...";
+            if (saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(function() {
+                db.collection("users").doc(State.uid).collection("data").doc("main").set({
+                    C: State.C, D: State.D
+                }).then(function() {
+                    document.getElementById('sync-status').innerText = "Sync ✓";
+                    renderRightPanel(); // Maj du split-screen
+                });
+            }, 1000);
+        }
+
+        function applyTheme() {
+            document.documentElement.setAttribute('data-theme', State.C.theme || 'nature-vibrant');
+            var fSize = State.C.fontSize || 16;
+            document.body.style.fontSize = fSize + 'px';
+        }
+
+        function nav(page) {
+            State.activePage = page;
+            
+            // Sauvegarde de la page visitée (sécurisé)
+            try { localStorage.setItem('vieEqLastPage', page); } catch(e) {}
+
+            var links = document.querySelectorAll('.sidebar a');
+            for(var i=0; i<links.length; i++) links[i].classList.remove('active');
+            var activeLink = document.getElementById('nav-' + page);
+            if(activeLink) activeLink.classList.add('active');
+
+            var mNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            document.getElementById('current-month-display').innerText = mNames[State.activeDate.getMonth()] + " " + State.activeDate.getFullYear();
+
+            var content = document.getElementById('main-content');
+            content.innerHTML = ""; 
+
+            try {
+                if (page === 'jour') renderJour(content);
+                else if (page === 'mois') renderMois(content);
+                else if (page === 'courses') renderCourses(content);
+                else if (page === 'settings') renderSettings(content);
+                else content.innerHTML = "<div class='card'><p>Page en construction ("+page+").</p></div>";
+            } catch (e) {
+                content.innerHTML = "<div class='error-msg'>Erreur de rendu: " + e.message + "</div>";
+            }
+            renderRightPanel();
+        }
+
+        function changeMonth(delta) {
+            State.activeDate.setMonth(State.activeDate.getMonth() + delta);
+            nav(State.activePage);
+        }
+
+        function renderJour(container) {
             var h = [];
-            
+            var year = State.activeDate.getFullYear();
+            var month = State.activeDate.getMonth();
+            var daysInMonth = new Date(year, month + 1, 0).getDate();
             var todayInt = State.activeDate.getDate();
+
+            // Calendrier horizontal
+            h.push("<div class='calendar-strip'>");
+            var mk = getMonthKey(State.activeDate);
+            var md = initMonthData(mk);
+            for (var i = 1; i <= daysInMonth; i++) {
+                var dClass = "day-box";
+                if (i === todayInt) dClass += " active";
+                if (md.days[i] && md.days[i].spendings && md.days[i].spendings.length > 0) dClass += " has-data";
+                h.push("<div class='" + dClass + "' onclick=\"setDate(" + i + ")\">" + i + "<div class='dot'></div></div>");
+            }
+            h.push("</div>");
+
             var dayData = getDayData(todayInt);
-            
-            // Calcul du budget pour le widget
+
+            // Icones du haut (style Option 2)
+            h.push("<div class='icon-row'><div class='icon-circle'>🧘</div><div class='icon-circle' style='color:var(--secondary);'>🏃</div><div class='icon-circle' style='color:var(--accent);'>💧</div><div class='icon-circle' style='color:var(--text);'>📖</div></div>");
+
+            h.push("<div class='grid-2'>");
+
+            // Budget Rapide
+            h.push("<div class='card'><h3>Budget du " + todayInt + "</h3>");
             var env = State.C.dayBudget || 20000;
             var spent = 0;
             if (dayData.spendings) {
                 for (var j=0; j<dayData.spendings.length; j++) spent += Number(dayData.spendings[j].amt || 0);
             }
             var reste = env - spent;
-            var progress = Math.min(100, (spent/env)*100);
+            h.push("<h2 style='color:" + (reste<0?'var(--danger)':'var(--text)') + "'>Reste : " + fmtAr(reste) + "</h2>");
+            h.push("<div class='progress-bar' style='margin-bottom:15px;'><div class='progress-fill' style='width:" + Math.min(100, (spent/env)*100) + "%'></div></div>");
             
-            h.push("<h2 style='margin-bottom: 20px; font-weight: bold; font-family: var(--font-title); color: var(--primary);'>Résumé & Actions</h2>");
+            h.push("<div class='flex-between'><input type='text' id='dep-desc' placeholder='Ex: Repas' style='width:55%;'><input type='number' id='dep-amt' placeholder='Ar' style='width:40%;'></div>");
+            h.push("<button onclick=\"addSpending(" + todayInt + ")\" style='width:100%; margin-bottom:10px;'>Ajouter</button>");
             
-            // 1. CARTE SCORE GLOBAL (Bleu profond typique de l'Option 2)
-            h.push("<div class='card' style='text-align:center; background: linear-gradient(135deg, #05668d, #427aa1); color: white; border: none; box-shadow: 0 10px 20px rgba(5, 102, 141, 0.3);'>");
-            h.push("<h3 style='color: rgba(255,255,255,0.9); border:none; margin-bottom:5px; font-size: 1.1rem;'>Score Global</h3>");
-            h.push("<h1 style='font-size:4.5em; font-weight:bold; margin:0; line-height: 1;'>85<span style='font-size:0.4em;'>%</span></h1>");
-            h.push("<p style='font-size:0.85em; opacity:0.8; margin-top: 10px;'>Excellente dynamique !</p>");
-            h.push("</div>");
-            
-            // 2. CARTE BUDGET (Suivi express)
-            h.push("<div class='card' style='border: 1px solid var(--border); box-shadow: var(--card-shadow);'>");
-            h.push("<div class='flex-between' style='margin-bottom: 15px;'>");
-            h.push("<h3 style='margin: 0; padding: 0; border: none; font-size: 1.1rem; color: var(--primary);'>Budget du jour</h3>");
-            h.push("<button class='outline' style='padding:6px 10px; font-size:0.8em; border-radius: 10px;' onclick='nav(\"jour\")'>+ Ajouter</button>");
-            h.push("</div>");
-            h.push("<div class='flex-between' style='font-size:0.95em; margin-bottom:8px;'><span style='color:var(--text-muted);'>Dépensé</span> <strong class='mono'>" + fmtAr(spent) + "</strong></div>");
-            h.push("<div class='flex-between' style='font-size:1.1em; margin-bottom:12px;'><span style='color:var(--text);'>Reste</span> <strong class='mono' style='color:" + (reste<0?'var(--danger)':'var(--primary)') + "'>" + fmtAr(reste) + "</strong></div>");
-            h.push("<div class='progress-bar' style='height:12px; background: rgba(5, 102, 141, 0.1);'><div class='progress-fill' style='width:" + progress + "%; background: linear-gradient(90deg, var(--secondary), var(--primary));'></div></div>");
+            if (dayData.spendings) {
+                for (var k=0; k<dayData.spendings.length; k++) {
+                    var s = dayData.spendings[k];
+                    h.push("<div class='flex-between' style='font-size:0.9em; margin-bottom:5px; padding:5px; background:rgba(0,0,0,0.03); border-radius:8px;'><span>" + s.desc + "</span><span>" + fmtAr(s.amt) + " <b style='color:var(--danger);cursor:pointer;' onclick=\"delSpending(" + todayInt + ", " + k + ")\">✕</b></span></div>");
+                }
+            }
             h.push("</div>");
 
-            // 3. CARTE TÂCHES & PLANNING (Quick View)
-            h.push("<div class='card' style='border: 1px solid var(--border); box-shadow: var(--card-shadow);'>");
-            h.push("<h3 style='border-bottom: none; margin-bottom: 15px; font-size: 1.1rem; color: var(--primary);'>Prochaines Tâches</h3>");
-            h.push("<ul style='list-style:none; padding:0; font-size:0.95em;'>");
-            h.push("<li style='margin-bottom:12px; padding: 10px; background: rgba(103, 148, 54, 0.1); border-left:4px solid var(--green); border-radius: 0 8px 8px 0;'><strong>GTV:</strong> Réunion d'équipe (14h)</li>");
-            h.push("<li style='margin-bottom:12px; padding: 10px; background: rgba(66, 122, 161, 0.1); border-left:4px solid var(--accent); border-radius: 0 8px 8px 0;'><strong>iScale:</strong> Validation Maquette</li>");
-            h.push("<li style='margin-bottom:12px; padding: 10px; background: rgba(5, 102, 141, 0.05); border-left:4px solid var(--border); border-radius: 0 8px 8px 0; color:var(--text-muted);'><del>Faire les courses</del></li>");
-            h.push("</ul>");
-            h.push("<button style='width:100%; margin-top:5px; background: transparent; color: var(--primary); border: 2px solid var(--primary); box-shadow: none;' onclick='nav(\"taches\")'>Gérer mes tâches</button>");
+            // Habitudes / Défis
+            h.push("<div class='card'><h3>Mes Défis</h3>");
+            if (State.C.habitRows) {
+                for (var hidx=0; hidx<State.C.habitRows.length; hidx++) {
+                    var hName = State.C.habitRows[hidx];
+                    var isChecked = dayData.habits[hidx] ? "checked" : "";
+                    h.push("<div style='margin-bottom:10px; background:rgba(0,0,0,0.03); padding:10px; border-radius:12px;'><label style='display:flex; align-items:center; cursor:pointer;'><input type='checkbox' " + isChecked + " onchange=\"toggleHabit(" + todayInt + ", " + hidx + ", this.checked)\" style='width:auto; margin:0 10px 0 0;'> " + hName + "</label></div>");
+                }
+            }
+            h.push("</div>");
+
+            h.push("</div>"); // Fin Grid
+            container.innerHTML = h.join("");
+        }
+
+        function renderSettings(container) { 
+            var h = [];
+            h.push("<div class='card'><h3>Paramètres d'Affichage</h3>");
+            
+            // Gestion de la taille de police
+            var fSize = State.C.fontSize || 16;
+            h.push("<div class='flex-between' style='margin-bottom:15px;'><label>Taille du texte : <strong>" + fSize + "px</strong></label>");
+            h.push("<div><button class='outline' onclick='changeFontSize(-1)'>A-</button> <button class='outline' onclick='changeFontSize(1)'>A+</button></div></div>");
+
+            // Nouveaux Thèmes
+            h.push("<label>Thème Visuel:</label><select id='set-theme' onchange='updateTheme(this.value)'>");
+            h.push("<option value='nature-vibrant' "+(State.C.theme==='nature-vibrant'?'selected':'')+">Nature Vibrant (Défaut)</option>");
+            h.push("<option value='ocean-ice' "+(State.C.theme==='ocean-ice'?'selected':'')+">Ocean Ice</option>");
+            h.push("<option value='deep-blue' "+(State.C.theme==='deep-blue'?'selected':'')+">Deep Blue</option>");
+            h.push("<option value='terracotta' "+(State.C.theme==='terracotta'?'selected':'')+">Terracotta</option>");
+            h.push("<option value='neutral-nude' "+(State.C.theme==='neutral-nude'?'selected':'')+">Neutral Nude</option>");
+            h.push("<option value='forest' "+(State.C.theme==='forest'?'selected':'')+">Forest</option>");
+            h.push("<option value='dark' "+(State.C.theme==='dark'?'selected':'')+">Classique Dark</option>");
+            h.push("</select>");
+            h.push("</div>");
+
+            h.push("<div class='card'><h3>Configuration Budget</h3>");
+            h.push("<label>Budget Journalier (Ar):</label><input type='number' id='set-day' value='"+(State.C.dayBudget||0)+"' onchange='updateConfig(\"dayBudget\", this.value)'>");
+            h.push("<label>Enveloppe Courses (Ar):</label><input type='number' id='set-courses' value='"+(State.C.coursesMo||0)+"' onchange='updateConfig(\"coursesMo\", this.value)'>");
+            h.push("</div>");
+            container.innerHTML = h.join("");
+        }
+
+        function renderRightPanel() {
+            var rp = document.getElementById('right-panel');
+            if (!rp) return;
+            var h = [];
+            
+            // Grande carte bleue (Score global)
+            h.push("<div class='card' style='background: var(--primary); color: white; text-align:center;'>");
+            h.push("<h3 style='color:white; border:none;'>Aujourd'hui</h3>");
+            h.push("<p style='opacity:0.8;'>Score Bien-être</p>");
+            h.push("<h1 style='font-size:3.5rem; margin:10px 0;'>85</h1>");
+            h.push("</div>");
+
+            // Carte Budget Resume
+            var todayInt = State.activeDate.getDate();
+            var dayData = getDayData(todayInt);
+            var env = State.C.dayBudget || 20000;
+            var spent = 0;
+            if (dayData.spendings) {
+                for (var j=0; j<dayData.spendings.length; j++) spent += Number(dayData.spendings[j].amt || 0);
+            }
+            h.push("<div class='card'><h3>Résumé Budget</h3>");
+            h.push("<div class='score-circle'><span style='font-size:0.8em;'>Dépensé</span><strong class='mono'>" + fmtAr(spent) + "</strong></div>");
+            h.push("<p class='text-center' style='font-size:0.9em;'>Sur " + fmtAr(env) + " prévus</p>");
+            h.push("</div>");
+
+            // Tâches
+            h.push("<div class='card'><h3>Tâches (GTV/iScale)</h3>");
+            h.push("<div class='task-item'>Réunion de production (GTV)</div>");
+            h.push("<div class='task-item iscale'>Mise à jour base de données (iScale)</div>");
+            h.push("<div class='task-item'>Appeler fournisseur</div>");
             h.push("</div>");
 
             rp.innerHTML = h.join("");
         }
 
-        // DÉMARRAGE : Mise à jour de l'anneau de progression du jour (6h-23h)
-        updateTimeRing();
+        function setDate(d) { State.activeDate.setDate(d); nav('jour'); }
+        
+        function addSpending(dayInt) {
+            var desc = document.getElementById('dep-desc').value;
+            var amt = Number(document.getElementById('dep-amt').value);
+            if (!desc || amt <= 0) return;
+            var dayData = getDayData(dayInt);
+            dayData.spendings.push({desc: desc, amt: amt});
+            triggerSave(); nav('jour');
+        }
+        function delSpending(dayInt, idx) {
+            getDayData(dayInt).spendings.splice(idx, 1);
+            triggerSave(); nav('jour');
+        }
+        function toggleHabit(dayInt, hidx, val) {
+            getDayData(dayInt).habits[hidx] = val;
+            triggerSave();
+        }
+        function updateTheme(val) { State.C.theme = val; applyTheme(); triggerSave(); }
+        function updateConfig(key, val) { State.C[key] = Number(val); triggerSave(); }
+        
+        function changeFontSize(delta) {
+            var current = State.C.fontSize || 16;
+            var newVal = current + delta;
+            if(newVal >= 12 && newVal <= 26) {
+                State.C.fontSize = newVal;
+                applyTheme();
+                triggerSave();
+                nav('settings');
+            }
+        }
+
+        // Mocks pour éviter le crash des boutons non implémentés complètement
+        function renderMois(c) { c.innerHTML = "<div class='card'><h3>Mois</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
+        function renderCourses(c) { c.innerHTML = "<div class='card'><h3>Courses</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
 
     </script>
 </body>
