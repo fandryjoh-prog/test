@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="nature-vibrant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vie Équilibrée - Fandry</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&family=DM+Mono&display=swap" rel="stylesheet">
+    
+    <!-- FIREBASE COMPAT SDK (Strictement asynchrone classique, pas de module) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        /* THEMES & VARIABLES CSS */
+        :root {
+            --font-title: 'DM Serif Display', serif;
+            --font-text: 'DM Sans', sans-serif;
+            --font-mono: 'DM Mono', monospace;
+            --sidebar-width: 250px;
+            --right-panel-width: 300px;
+            --transition: all 0.3s ease;
+        }
+
+        /* PALETTE DEMANDÉE : Nature Vibrant */
+        [data-theme="nature-vibrant"] {
+            --bg: linear-gradient(135deg, #05668d 0%, #427aa1 100%);
+            --surface: #ebf2fa;
+            --surface-hover: #ffffff;
+            --text: #05668d;
+            --text-muted: #427aa1;
+            --primary: #679436;
+            --secondary: #a5be00;
+            --accent: #427aa1;
+            --border: rgba(5, 102, 141, 0.15);
+            --gold: #a5be00;
+            --green: #679436;
+            --danger: #e63946;
+            --card-shadow: 0 10px 25px rgba(5, 102, 141, 0.25);
+            --header-text: #ebf2fa;
+        }
+
+        /* Thèmes alternatifs conservés pour les paramètres */
+        [data-theme="dark"] { --bg: #121212; --surface: #1E1E1E; --surface-hover: #2C2C2C; --text: #E0E0E0; --text-muted: #9E9E9E; --primary: #BB86FC; --secondary: #03DAC6; --border: #333333; --card-shadow: 0 4px 6px rgba(0,0,0,0.3); --header-text: #E0E0E0; }
+        [data-theme="light"] { --bg: #F5F5F5; --surface: #FFFFFF; --surface-hover: #E0E0E0; --text: #121212; --text-muted: #666666; --primary: #6200EE; --secondary: #018786; --border: #DDDDDD; --card-shadow: 0 4px 6px rgba(0,0,0,0.1); --header-text: #121212; }
+
+        /* RESET & BASE */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: var(--font-text); 
+            background: var(--bg); 
+            background-attachment: fixed; 
+            color: var(--text); 
+            overflow-x: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
+        h1, h2, h3 { font-family: var(--font-title); font-weight: normal; }
+        .mono { font-family: var(--font-mono); }
+        
+        button { 
+            cursor: pointer; border: none; outline: none; background: var(--primary); 
+            color: #ffffff; padding: 12px 20px; border-radius: 16px; font-weight: bold; 
+            font-family: var(--font-text); transition: var(--transition); 
+            box-shadow: 0 4px 10px rgba(103, 148, 54, 0.3);
+        }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        button.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
+        
+        input, select, textarea { 
+            width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 16px; 
+            border: 1px solid var(--border); background: rgba(255,255,255,0.7); 
+            color: var(--text); font-family: var(--font-text); transition: var(--transition); 
+        }
+        input:focus { outline: none; border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 3px rgba(103, 148, 54, 0.2); }
+        
+        /* LAYOUT */
+        #app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; }
+        
+        .sidebar { width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; overflow-y: auto; }
+        .sidebar a { padding: 12px 20px; color: var(--text-muted); text-decoration: none; display: block; border-left: 4px solid transparent; transition: var(--transition); font-weight: 500; }
+        .sidebar a:hover, .sidebar a.active { color: var(--primary); border-left-color: var(--primary); background: rgba(103, 148, 54, 0.1); }
+        .sidebar h4 { padding: 10px 20px; margin-top: 15px; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .topbar { height: 70px; background: transparent; color: var(--header-text); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .topbar button.outline { border-color: var(--header-text); color: var(--header-text); }
+        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 110px; } /* Espace pour la bottom nav */
+
+        .right-panel { width: var(--right-panel-width); background: var(--surface); border-left: 1px solid var(--border); padding: 20px; overflow-y: auto; display: none; }
+        @media (min-width: 1200px) { .right-panel { display: block; } }
+
+        /* NAVIGATION FLOTTANTE MOBILE */
+        .bottom-nav { 
+            display: none; background: var(--surface); border-radius: 35px; 
+            margin: 15px; box-shadow: var(--card-shadow); padding: 8px 15px; 
+            align-items: center; justify-content: space-between; position: fixed; 
+            bottom: 0; left: 0; right: 0; z-index: 100; border: 1px solid rgba(255,255,255,0.5); 
+            backdrop-filter: blur(10px); 
+        }
+        .bottom-nav button { 
+            background: transparent; color: var(--text-muted); font-size: 1.4rem; 
+            padding: 10px; border-radius: 20px; flex: 1; display: flex; 
+            justify-content: center; align-items: center; box-shadow: none;
+        }
+        .bottom-nav button:hover, .bottom-nav button.active { 
+            color: var(--primary); background: rgba(103, 148, 54, 0.1); transform: none; 
+        }
+        /* Le gros bouton central (FAB) */
+        .bottom-nav .fab { 
+            background: linear-gradient(135deg, var(--secondary), var(--primary)); 
+            color: white; width: 64px; height: 64px; max-width: 64px; 
+            border-radius: 50%; transform: translateY(-25px); 
+            box-shadow: 0 10px 20px rgba(103, 148, 54, 0.4); 
+            border: 5px solid #427aa1; font-size: 1.8rem; 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .bottom-nav .fab:hover { transform: translateY(-28px) scale(1.05); }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .bottom-nav { display: flex; }
+            .topbar h2 { font-size: 1.2rem; }
+        }
+
+        /* COMPONENTS */
+        .card { 
+            background: var(--surface); border-radius: 24px; padding: 20px; 
+            margin-bottom: 20px; border: none; box-shadow: var(--card-shadow); 
+            position: relative; overflow: hidden; 
+        }
+        .card h3 { margin-bottom: 15px; padding-bottom: 5px; color: var(--text); font-weight: bold; font-family: var(--font-text); font-size: 1.1rem; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+        
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .text-center { text-align: center; }
+        
+        /* Strip Calendrier */
+        .calendar-strip { display: flex; overflow-x: auto; padding-bottom: 15px; gap: 12px; scrollbar-width: none; }
+        .calendar-strip::-webkit-scrollbar { display: none; }
+        .day-box { 
+            min-width: 55px; text-align: center; padding: 12px 5px; border-radius: 18px; 
+            background: rgba(235, 242, 250, 0.2); border: 1px solid rgba(255,255,255,0.3); 
+            cursor: pointer; color: var(--header-text); backdrop-filter: blur(5px); transition: var(--transition); 
+        }
+        .day-box.active { 
+            background: var(--surface); color: var(--text); font-weight: bold; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-color: var(--surface); transform: scale(1.05); 
+        }
+        .day-box .dot { width: 6px; height: 6px; background: var(--secondary); border-radius: 50%; margin: 5px auto 0; display: none; }
+        .day-box.has-data .dot { display: block; }
+
+        /* Progress Bar */
+        .progress-bar { height: 14px; background: rgba(5, 102, 141, 0.1); border-radius: 7px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), var(--primary)); width: 0%; transition: width 0.5s ease; border-radius: 7px; }
+
+        /* Messages */
+        .error-msg { color: var(--danger); background: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 16px; border: 1px solid var(--danger); margin-bottom: 15px; }
+        .success-msg { color: var(--green); background: rgba(103, 148, 54, 0.1); padding: 15px; border-radius: 16px; border: 1px solid var(--green); margin-bottom: 15px; }
+
+        /* Auth Screen */
+        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: var(--bg); }
+        .auth-box { background: var(--surface); padding: 40px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; box-shadow: var(--card-shadow); }
+    </style>
+</head>
+<body>
+
+    <!-- AUTHENTIFICATION -->
+    <div id="auth-screen">
+        <div class="auth-box">
+            <h1 style="color: var(--text); margin-bottom: 10px;">Vie Équilibrée</h1>
+            <p style="margin-bottom: 30px; color: var(--text-muted);">Connexion sécurisée</p>
+            <input type="email" id="auth-email" placeholder="Email (ex: fandryjoh@gmail.com)">
+            <input type="password" id="auth-pwd" placeholder="Mot de passe">
+            <button onclick="appLogin()" style="width: 100%; margin-bottom: 15px; padding: 14px; font-size: 1.1rem;">Se connecter</button>
+            <div id="auth-error" class="error-msg" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- APPLICATION PRINCIPALE -->
+    <div id="app-container" style="display: none;">
+        
+        <!-- SIDEBAR (Desktop) -->
+        <nav class="sidebar">
+            <div style="padding: 0 20px 20px;">
+                <h2 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 5px;">Vie Équilibrée</h2>
+                <div style="font-size: 0.85em; color: var(--text-muted); background: rgba(5, 102, 141, 0.1); padding: 5px 10px; border-radius: 10px; display: inline-block;" id="user-chip"></div>
+            </div>
+            <h4>Quotidien</h4>
+            <a href="#" onclick="nav('jour')" id="nav-jour">🏠 Jour</a>
+            <a href="#" onclick="nav('semaine')" id="nav-semaine">📅 Semaine</a>
+            <a href="#" onclick="nav('mois')" id="nav-mois">📊 Mois</a>
+            <h4>Finances</h4>
+            <a href="#" onclick="nav('courses')" id="nav-courses">🛒 Courses</a>
+            <a href="#" onclick="nav('revenus')" id="nav-revenus">💰 Revenus & Fonds</a>
+            <a href="#" onclick="nav('stats')" id="nav-stats">📈 Statistiques</a>
+            <h4>Gestion</h4>
+            <a href="#" onclick="nav('taches')" id="nav-taches">✅ Tâches</a>
+            <a href="#" onclick="nav('objectifs')" id="nav-objectifs">🎯 Objectifs</a>
+            <a href="#" onclick="nav('journal')" id="nav-journal">📝 Journal</a>
+            <a href="#" onclick="nav('bienetre')" id="nav-bienetre">🧘 Bien-être</a>
+            <a href="#" onclick="nav('planning')" id="nav-planning">⏰ Planning</a>
+            <h4>Compte</h4>
+            <a href="#" onclick="nav('settings')" id="nav-settings">⚙️ Paramètres</a>
+            <a href="#" onclick="nav('admin')" id="nav-admin" style="display:none;">🔒 Admin</a>
+            <a href="#" onclick="appLogout()" style="margin-top: 20px; color: var(--danger);">Déconnexion</a>
+        </nav>
+
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="flex-between" style="width: 220px;">
+                    <button class="outline" onclick="changeMonth(-1)" style="padding: 8px 15px; border-radius: 12px; color: white; border-color: rgba(255,255,255,0.5);">‹</button>
+                    <h3 id="current-month-display" style="font-family: var(--font-text); font-weight: bold; font-size: 1.1rem;">Juin 2026</h3>
+                    <button class="outline" onclick="changeMonth(1)" style="padding: 8px 15px; border-radius: 12px; color: white; border-color: rgba(255,255,255,0.5);">›</button>
+                </div>
+                <div class="flex-between">
+                    <div id="sync-status" style="margin-right: 15px; font-size: 0.8em; opacity: 0.8;">Sync ✓</div>
+                    <svg width="45" height="45" viewBox="0 0 40 40">
+                        <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4"/>
+                        <circle id="day-progress-ring" cx="20" cy="20" r="16" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-dasharray="100 100" stroke-dashoffset="100" transform="rotate(-90 20 20)"/>
+                    </svg>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <main class="content-area" id="main-content">
+                <!-- Rendu dynamique ici -->
+            </main>
+        </div>
+
+        <!-- RIGHT PANEL (Desktop > 1200px) -->
+        <aside class="right-panel" id="right-panel">
+            <!-- Rendu dynamique des widgets ici -->
+        </aside>
+
+        <!-- BOTTOM NAV FLOTTANTE (Mobile) -->
+        <nav class="bottom-nav">
+            <button onclick="nav('jour')" id="mob-jour">🏠</button>
+            <button onclick="nav('taches')" id="mob-taches">✅</button>
+            <button class="fab" onclick="nav('jour')">⚡</button>
+            <button onclick="nav('revenus')" id="mob-revenus">💰</button>
+            <button onclick="nav('settings')" id="mob-settings">⚙️</button>
+        </nav>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL -->
+    <script>
+        /**
+         * INITIALISATION FIREBASE (Compat SDK)
+         */
+        var firebaseConfig = {
+            apiKey: "AIzaSyAdfIiIMRevlNcyNhueJq2fzRdD53XBT1I",
+            authDomain: "mon-outil-budget.firebaseapp.com",
+            projectId: "mon-outil-budget",
+            storageBucket: "mon-outil-budget.firebasestorage.app",
+            messagingSenderId: "528991480334",
+            appId: "1:528991480334:web:2bf07bf807e2f9c148aa5f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var auth = firebase.auth();
+        var db = firebase.firestore();
+
+        /**
+         * ÉTAT GLOBAL ET DONNÉES PAR DÉFAUT
+         */
+        var State = {
+            uid: null,
+            email: null,
+            isAdmin: false,
+            activePage: 'jour',
+            activeDate: new Date(),
+            D: {}, // Données mensuelles D[YYYY-MM]
+            C: {}  // Configuration
+        };
+
+        var defaultC = {
+            dayBudget: 20000,
+            coursesMo: 600000,
+            savings: 1000000,
+            fixedRows: [{n: "Loyer", v: 200000}, {n: "Internet", v: 50000}, {n: "Entretien moto", v: 70000}],
+            careRows: [{n: "Vêtements", v: 30000}, {n: "Chaussures", v: 30000}, {n: "Beauté", v: 30000}],
+            weekRows: [{n: "Chilling", v: 40000}],
+            incRows: [{n: "Salaire principal", v: 0}, {n: "GTV/Studio", v: 0}, {n: "iScale", v: 0}, {n: "Autres revenus", v: 0}],
+            habitRows: ["Réveil à l'heure", "Sport du matin", "2L d'eau", "7-8h sommeil", "Alimentation saine", "Gratitude/Prière", "No phone 30min", "Dîme mise de côté"],
+            wakeSchedule: {"1":"Sport salle", "2":"Variable", "3":"Sport basket", "4":"Variable", "5":"Sport salle", "6":"Eglise", "0":"Repos"},
+            workSchedule: {"1":"10h-12h30 Studio GTV, 14h-23h Bureau iScale", "2":"10h-12h30 Studio GTV, 14h-23h Bureau iScale", "3":"10h-12h30 Studio GTV, 14h-23h Bureau iScale", "4":"Bureau iScale", "5":"Bureau iScale", "6":"Libre", "0":"Libre"},
+            theme: "nature-vibrant" // Thème par défaut défini sur la palette demandée
+        };
+
+        var saveTimeout = null;
+
+        /**
+         * UTILITAIRES & PROGRAMMATION DÉFENSIVE
+         */
+        function safeStr(str) {
+            if (!str) return "";
+            return String(str).replace(/'/g, "\\'"); // Échappement strict exigé
+        }
+        function fmtAr(num) {
+            if (isNaN(num)) return "0 Ar";
+            return Number(num).toLocaleString('fr-FR') + " Ar";
+        }
+        function getMonthKey(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            return y + "-" + (m < 10 ? "0" + m : m);
+        }
+        function initMonthData(key) {
+            if (!State.D[key]) {
+                State.D[key] = { days: {}, courses: [], revenus: {}, tasks: [], goals: [], journal: {}, wellness: {}, events: [] };
+            }
+            return State.D[key];
+        }
+        function getDayData(dayInt) {
+            var mk = getMonthKey(State.activeDate);
+            var md = initMonthData(mk);
+            if (!md.days[dayInt]) md.days[dayInt] = { spendings: [], habits: [], notes: "", sport: "" };
+            return md.days[dayInt];
+        }
+
+        /**
+         * AUTHENTIFICATION & FIREBASE
+         */
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                State.uid = user.uid;
+                State.email = user.email;
+                State.isAdmin = (user.email === "fandryjoh@gmail.com" || user.email === "fandryjohprog@gmail.com");
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.getElementById('user-chip').innerText = user.email;
+                if(State.isAdmin) document.getElementById('nav-admin').style.display = 'block';
+                loadData();
+            } else {
+                document.getElementById('auth-screen').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+            }
+        });
+
+        function appLogin() {
+            var e = document.getElementById('auth-email').value;
+            var p = document.getElementById('auth-pwd').value;
+            var errDiv = document.getElementById('auth-error');
+            errDiv.style.display = 'none';
+            
+            auth.signInWithEmailAndPassword(e, p).catch(function(err) {
+                errDiv.innerText = err.message;
+                errDiv.style.display = 'block';
+            });
+        }
+
+        function appLogout() {
+            auth.signOut();
+        }
+
+        function loadData() {
+            db.collection("users").doc(State.uid).collection("data").doc("main").get().then(function(doc) {
+                if (doc.exists) {
+                    var data = doc.data();
+                    State.C = data.C || JSON.parse(JSON.stringify(defaultC));
+                    State.D = data.D || {};
+                } else {
+                    State.C = JSON.parse(JSON.stringify(defaultC));
+                    State.D = {};
+                }
+                applyTheme();
+                updateTimeRing();
+                nav(State.activePage);
+            }).catch(function(err) {
+                console.error("Load Error", err);
+                alert("Erreur de chargement: " + err.message);
+            });
+        }
+
+        function triggerSave() {
+            var syncEl = document.getElementById('sync-status');
+            syncEl.innerText = "Syncing...";
+            syncEl.style.color = "#FFD166"; // Gold
+            
+            if (saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(function() {
+                db.collection("users").doc(State.uid).collection("data").doc("main").set({
+                    C: State.C,
+                    D: State.D
+                }).then(function() {
+                    syncEl.innerText = "Sync ✓";
+                    syncEl.style.color = "#ffffff";
+                    renderRightPanel();
+                }).catch(function(err) {
+                    syncEl.innerText = "Erreur Sync";
+                    syncEl.style.color = "var(--danger)";
+                });
+            }, 1000);
+        }
+
+        function applyTheme() {
+            // Forcer le thème nature-vibrant s'il n'est pas défini, ou appliquer celui sauvegardé
+            document.documentElement.setAttribute('data-theme', State.C.theme || 'nature-vibrant');
+        }
+
+        /**
+         * NAVIGATION & UI BASE
+         */
+        function nav(page) {
+            State.activePage = page;
+            
+            // Sidebar desktop active state
+            var links = document.querySelectorAll('.sidebar a');
+            for(var i=0; i<links.length; i++) links[i].classList.remove('active');
+            var activeLink = document.getElementById('nav-' + page);
+            if(activeLink) activeLink.classList.add('active');
+
+            // Bottom nav mobile active state
+            var mobLinks = document.querySelectorAll('.bottom-nav button');
+            for(var j=0; j<mobLinks.length; j++) mobLinks[j].classList.remove('active');
+            var activeMobLink = document.getElementById('mob-' + page);
+            if(activeMobLink) activeMobLink.classList.add('active');
+
+            // Update Header Month
+            var mNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            document.getElementById('current-month-display').innerText = mNames[State.activeDate.getMonth()] + " " + State.activeDate.getFullYear();
+
+            var content = document.getElementById('main-content');
+            content.innerHTML = ""; // Clear
+
+            try {
+                if (page === 'jour') renderJour(content);
+                else if (page === 'semaine') renderSemaine(content);
+                else if (page === 'mois') renderMois(content);
+                else if (page === 'courses') renderCourses(content);
+                else if (page === 'revenus') renderRevenus(content);
+                else if (page === 'stats') renderStats(content);
+                else if (page === 'taches') renderTaches(content);
+                else if (page === 'objectifs') renderObjectifs(content);
+                else if (page === 'journal') renderJournal(content);
+                else if (page === 'bienetre') renderBienEtre(content);
+                else if (page === 'planning') renderPlanning(content);
+                else if (page === 'settings') renderSettings(content);
+                else if (page === 'admin' && State.isAdmin) renderAdmin(content);
+                else content.innerHTML = "<p>Page introuvable.</p>";
+            } catch (e) {
+                // EXIGENCE: GESTION D'ERREUR VISIBLE
+                content.innerHTML = "<div class='error-msg'><h3>Erreur de Rendu ("+page+")</h3><p>" + e.message + "</p><pre>" + e.stack + "</pre></div>";
+            }
+            renderRightPanel();
+        }
+
+        function changeMonth(delta) {
+            State.activeDate.setMonth(State.activeDate.getMonth() + delta);
+            nav(State.activePage);
+        }
+
+        function updateTimeRing() {
+            var now = new Date();
+            var h = now.getHours();
+            var m = now.getMinutes();
+            var totalMins = (h * 60) + m;
+            var startMins = 6 * 60; // 6h
+            var endMins = 23 * 60;  // 23h
+            var pct = 0;
+            if (totalMins > startMins && totalMins < endMins) {
+                pct = ((totalMins - startMins) / (endMins - startMins)) * 100;
+            } else if (totalMins >= endMins) {
+                pct = 100;
+            }
+            var dash = 100 - pct; // SVG stroke-dashoffset (approx 100 for path length)
+            document.getElementById('day-progress-ring').setAttribute('stroke-dashoffset', dash);
+            setTimeout(updateTimeRing, 60000);
+        }
+
+        /* STREAMING_CHUNK:Rendu de la vue
