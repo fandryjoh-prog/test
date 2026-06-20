@@ -155,16 +155,16 @@
                 <div style="font-size: 0.8em; color: var(--text-muted);" id="user-chip"></div>
             </div>
             <h4>Quotidien</h4>
-            <a href="#" onclick="nav('jour')" id="nav-jour">Jour</a>
-            <a href="#" onclick="nav('mois')" id="nav-mois">Mois</a>
+            <a href="#" onclick="nav('jour')" id="nav-jour">☀️ Jour</a>
+            <a href="#" onclick="nav('mois')" id="nav-mois">📅 Mois</a>
             <h4>Finances</h4>
-            <a href="#" onclick="nav('courses')" id="nav-courses">Courses</a>
+            <a href="#" onclick="nav('courses')" id="nav-courses">🛒 Courses</a>
             <h4>Gestion</h4>
-            <a href="#" onclick="nav('taches')" id="nav-taches">Tâches</a>
-            <a href="#" onclick="nav('bienetre')" id="nav-bienetre">Bien-être</a>
+            <a href="#" onclick="nav('taches')" id="nav-taches">✅ Tâches</a>
+            <a href="#" onclick="nav('bienetre')" id="nav-bienetre">🌿 Bien-être</a>
             <h4>Compte</h4>
-            <a href="#" onclick="nav('settings')" id="nav-settings">Paramètres</a>
-            <a href="#" onclick="appLogout()" style="margin-top:20px; color:var(--danger);">Déconnexion</a>
+            <a href="#" onclick="nav('settings')" id="nav-settings">⚙️ Paramètres</a>
+            <a href="#" onclick="appLogout()" style="margin-top:20px; color:var(--danger);">🚪 Déconnexion</a>
         </nav>
 
         <div class="main-wrapper">
@@ -381,7 +381,7 @@
             h.push("<div class='grid-2'>");
 
             // Budget Rapide
-            h.push("<div class='card'><h3>Budget du " + todayInt + "</h3>");
+            h.push("<div class='card'><h3>💰 Budget du " + todayInt + "</h3>");
             var env = State.C.dayBudget || 20000;
             var spent = 0;
             if (dayData.spendings) {
@@ -403,7 +403,7 @@
             h.push("</div>");
 
             // Habitudes / Défis
-            h.push("<div class='card'><h3>Mes Défis</h3>");
+            h.push("<div class='card'><h3>🏆 Mes Défis</h3>");
             if (State.C.habitRows) {
                 for (var hidx=0; hidx<State.C.habitRows.length; hidx++) {
                     var hName = State.C.habitRows[hidx];
@@ -419,7 +419,7 @@
 
         function renderSettings(container) { 
             var h = [];
-            h.push("<div class='card'><h3>Paramètres d'Affichage</h3>");
+            h.push("<div class='card'><h3>🎨 Paramètres d'Affichage</h3>");
             
             // Gestion de la taille de police
             var fSize = State.C.fontSize || 16;
@@ -438,7 +438,7 @@
             h.push("</select>");
             h.push("</div>");
 
-            h.push("<div class='card'><h3>Configuration Budget</h3>");
+            h.push("<div class='card'><h3>⚙️ Configuration Budget</h3>");
             h.push("<label>Budget Journalier (Ar):</label><input type='number' id='set-day' value='"+(State.C.dayBudget||0)+"' onchange='updateConfig(\"dayBudget\", this.value)'>");
             h.push("<label>Enveloppe Courses (Ar):</label><input type='number' id='set-courses' value='"+(State.C.coursesMo||0)+"' onchange='updateConfig(\"coursesMo\", this.value)'>");
             h.push("</div>");
@@ -452,7 +452,7 @@
             
             // Grande carte bleue (Score global)
             h.push("<div class='card' style='background: var(--primary); color: white; text-align:center;'>");
-            h.push("<h3 style='color:white; border:none;'>Aujourd'hui</h3>");
+            h.push("<h3 style='color:white; border:none;'>🌟 Aujourd'hui</h3>");
             h.push("<p style='opacity:0.8;'>Score Bien-être</p>");
             h.push("<h1 style='font-size:3.5rem; margin:10px 0;'>85</h1>");
             h.push("</div>");
@@ -465,13 +465,13 @@
             if (dayData.spendings) {
                 for (var j=0; j<dayData.spendings.length; j++) spent += Number(dayData.spendings[j].amt || 0);
             }
-            h.push("<div class='card'><h3>Résumé Budget</h3>");
+            h.push("<div class='card'><h3>📊 Résumé Budget</h3>");
             h.push("<div class='score-circle'><span style='font-size:0.8em;'>Dépensé</span><strong class='mono'>" + fmtAr(spent) + "</strong></div>");
             h.push("<p class='text-center' style='font-size:0.9em;'>Sur " + fmtAr(env) + " prévus</p>");
             h.push("</div>");
 
             // Tâches
-            h.push("<div class='card'><h3>Tâches (GTV/iScale)</h3>");
+            h.push("<div class='card'><h3>📝 Tâches (GTV/iScale)</h3>");
             h.push("<div class='task-item'>Réunion de production (GTV)</div>");
             h.push("<div class='task-item iscale'>Mise à jour base de données (iScale)</div>");
             h.push("<div class='task-item'>Appeler fournisseur</div>");
@@ -513,8 +513,8 @@
         }
 
         // Mocks pour éviter le crash des boutons non implémentés complètement
-        function renderMois(c) { c.innerHTML = "<div class='card'><h3>Mois</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
-        function renderCourses(c) { c.innerHTML = "<div class='card'><h3>Courses</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
+        function renderMois(c) { c.innerHTML = "<div class='card'><h3>📅 Mois</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
+        function renderCourses(c) { c.innerHTML = "<div class='card'><h3>🛒 Courses</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
 
     </script>
 </body>
