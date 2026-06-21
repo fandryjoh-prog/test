@@ -18,34 +18,15 @@
             --font-text: 'DM Sans', sans-serif;
             --font-mono: 'DM Mono', monospace;
             --sidebar-width: 250px;
-            --right-panel-width: 350px; /* Élargi pour Option 2 */
+            --right-panel-width: 350px;
             --radius: 24px;
             --transition: all 0.3s ease;
             --card-shadow: 0 8px 24px rgba(0,0,0,0.06);
         }
 
-        /* THÈMES ACTUELS ET NOUVEAUX */
         [data-theme="dark"] { --bg: #121212; --surface: #1E1E1E; --surface-hover: #2C2C2C; --text: #E0E0E0; --text-muted: #9E9E9E; --primary: #BB86FC; --secondary: #03DAC6; --accent: #CF6679; --border: #333333; --gold: #FFD700; --green: #4CAF50; --danger: #F44336; --header-text: #FFFFFF; }
         [data-theme="light"] { --bg: #F5F5F5; --surface: #FFFFFF; --surface-hover: #E0E0E0; --text: #121212; --text-muted: #666666; --primary: #6200EE; --secondary: #018786; --accent: #B00020; --border: #DDDDDD; --gold: #FBC02D; --green: #388E3C; --danger: #D32F2F; --header-text: #121212; }
-        
-        /* VOTRE THÈME PRINCIPAL : Nature Vibrant */
-        [data-theme="nature-vibrant"] {
-            --bg: linear-gradient(135deg, #05668d, #427aa1);
-            --surface: #ebf2fa;
-            --surface-hover: #ffffff;
-            --text: #05668d;
-            --text-muted: #427aa1;
-            --primary: #679436;
-            --secondary: #a5be00;
-            --accent: #FF9F1C;
-            --border: rgba(66, 122, 161, 0.2);
-            --gold: #FFD166;
-            --green: #679436;
-            --danger: #E63946;
-            --header-text: #ebf2fa;
-        }
-
-        /* NOUVEAUX THÈMES DEMANDÉS */
+        [data-theme="nature-vibrant"] { --bg: linear-gradient(135deg, #05668d, #427aa1); --surface: #ebf2fa; --surface-hover: #ffffff; --text: #05668d; --text-muted: #427aa1; --primary: #679436; --secondary: #a5be00; --accent: #FF9F1C; --border: rgba(66, 122, 161, 0.2); --gold: #FFD166; --green: #679436; --danger: #E63946; --header-text: #ebf2fa; }
         [data-theme="ocean-ice"] { --bg: #1B4965; --surface: #CAE9FF; --surface-hover: #BEE9E8; --text: #1B4965; --text-muted: #5FA8D3; --primary: #62B6CB; --secondary: #5FA8D3; --accent: #BEE9E8; --border: rgba(98, 182, 203, 0.3); --gold: #FFD166; --green: #62B6CB; --danger: #E63946; --header-text: #CAE9FF; }
         [data-theme="deep-blue"] { --bg: #0D1B2A; --surface: #1B263B; --surface-hover: #415A77; --text: #E0E1DD; --text-muted: #778DA9; --primary: #778DA9; --secondary: #415A77; --accent: #E0E1DD; --border: rgba(119, 141, 169, 0.2); --gold: #E0E1DD; --green: #415A77; --danger: #E63946; --header-text: #E0E1DD; }
         [data-theme="terracotta"] { --bg: #B36A5E; --surface: #EEE2DF; --surface-hover: #EED7C5; --text: #B36A5E; --text-muted: #C89F9C; --primary: #C97C5D; --secondary: #C89F9C; --accent: #EED7C5; --border: rgba(200, 159, 156, 0.3); --gold: #C97C5D; --green: #C89F9C; --danger: #B36A5E; --header-text: #EEE2DF; }
@@ -60,9 +41,12 @@
         button { cursor: pointer; border: none; outline: none; background: var(--primary); color: #ffffff; padding: 10px 16px; border-radius: 14px; font-weight: bold; font-family: var(--font-text); transition: var(--transition); }
         button:hover { opacity: 0.9; transform: translateY(-2px); }
         button.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        button.danger { background: var(--danger); }
+        button.small { padding: 6px 10px; font-size: 0.8em; border-radius: 10px; }
         
         input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.6); color: var(--text); font-family: var(--font-text); transition: var(--transition); }
-        input:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+        textarea { resize: vertical; min-height: 80px; }
 
         #app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; }
         
@@ -70,36 +54,37 @@
         .sidebar a { padding: 12px 20px; color: var(--text-muted); text-decoration: none; display: block; border-left: 4px solid transparent; transition: var(--transition); font-weight: 500; }
         .sidebar a:hover, .sidebar a.active { color: var(--primary); border-left-color: var(--primary); background: rgba(103, 148, 54, 0.1); }
         .sidebar h4 { padding: 10px 20px; margin-top: 15px; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .sidebar .admin-tag { background: var(--gold); color: #000; font-size: 0.65em; padding: 2px 6px; border-radius: 8px; margin-left: 6px; font-weight: bold; }
 
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { height: 70px; background: transparent; color: var(--header-text); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
         .topbar button.outline { border-color: var(--header-text); color: var(--header-text); }
+        .hamburger { display: none; background: transparent; font-size: 1.5rem; padding: 6px 10px; color: var(--header-text); }
+        .topbar-clock { font-family: var(--font-mono); font-size: 0.85em; opacity: 0.85; }
         
-        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; } /* Espace pour bottom nav */
+        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
 
-        /* PANNEAU DROIT - SPLIT SCREEN OPTION 2 */
         .right-panel { width: var(--right-panel-width); background: var(--surface); border-left: 1px solid var(--border); padding: 20px; overflow-y: auto; display: none; }
-        /* Déclenchement sur écran large */
-        @media (min-width: 1024px) { 
-            .right-panel { display: block; } 
-        }
+        @media (min-width: 1024px) { .right-panel { display: block; } }
 
         .bottom-nav { display: none; background: var(--surface); border-radius: 35px; margin: 15px; box-shadow: var(--card-shadow); padding: 8px 15px; align-items: center; justify-content: space-between; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px); }
         .bottom-nav button { background: transparent; color: var(--text-muted); font-size: 1.4rem; padding: 10px; border-radius: 20px; flex: 1; display: flex; justify-content: center; align-items: center; }
         .bottom-nav button:hover, .bottom-nav button.active { color: var(--primary); background: rgba(103, 148, 54, 0.1); transform: none; }
-        
-        /* Le Gros Bouton FAB Central */
         .bottom-nav .fab { background: linear-gradient(135deg, var(--secondary), var(--primary)); color: white; width: 64px; height: 64px; max-width: 64px; border-radius: 50%; transform: translateY(-25px); box-shadow: 0 10px 20px rgba(103, 148, 54, 0.4); border: 5px solid #427aa1; font-size: 1.8rem; }
         .bottom-nav .fab:hover { transform: translateY(-28px) scale(1.05); opacity: 1; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
+            .sidebar.mobile-open { display: flex; position: fixed; top: 0; left: 0; bottom: 0; z-index: 600; box-shadow: 10px 0 30px rgba(0,0,0,0.3); }
+            .sidebar-overlay { display: none; }
+            .sidebar-overlay.show { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 590; }
             .bottom-nav { display: flex; }
-            .topbar h2 { font-size: 1.2rem; }
+            .topbar h2, .topbar h3 { font-size: 1.1rem; }
+            .hamburger { display: block; }
         }
 
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 20px; border: none; box-shadow: var(--card-shadow); position: relative; overflow: hidden; }
-        .card h3 { margin-bottom: 15px; padding-bottom: 5px; color: var(--text); font-weight: bold; font-family: var(--font-text); font-size: 1.1rem; }
+        .card h3 { margin-bottom: 15px; padding-bottom: 5px; color: var(--text); font-weight: bold; font-family: var(--font-text); font-size: 1.1rem; display:flex; align-items:center; justify-content:space-between; }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
@@ -117,20 +102,50 @@
         .progress-bar { height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden; margin-top: 5px; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.5s ease; border-radius: 5px; }
 
-        /* Éléments visuels style Option 2 */
         .icon-row { display: flex; justify-content: space-around; margin-bottom: 20px; }
         .icon-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--surface); display: flex; justify-content: center; align-items: center; box-shadow: var(--card-shadow); font-size: 1.5rem; color: var(--primary); }
         .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 10px solid var(--primary); border-top-color: var(--secondary); border-right-color: var(--accent); margin: 0 auto 10px; display: flex; justify-content: center; align-items: center; flex-direction: column; }
         
-        /* Widget Tâches Split Screen */
         .task-item { background: rgba(255,255,255,0.8); padding: 10px; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; font-size: 0.9em; }
-        .task-item::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; background: var(--primary); }
+        .task-item::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; background: var(--primary); flex-shrink:0; }
         .task-item.iscale::before { background: var(--text-muted); }
+        .task-item.done { opacity: 0.5; text-decoration: line-through; }
+        .task-item.urgent::before { background: var(--danger); }
+        .task-item span.tname { flex:1; }
+        .task-item button { margin-left:8px; padding: 4px 8px; font-size: 0.85em; }
 
         .error-msg { color: var(--danger); background: rgba(230, 57, 70, 0.1); padding: 10px; border-radius: 8px; border: 1px solid var(--danger); margin-bottom: 15px; }
         
-        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: var(--bg); }
         .auth-box { background: var(--surface); padding: 40px; border-radius: var(--radius); width: 100%; max-width: 400px; text-align: center; box-shadow: var(--card-shadow); }
+        .auth-switch { margin-top: 12px; font-size: 0.85em; color: var(--text-muted); cursor: pointer; }
+        .auth-switch span { color: var(--primary); font-weight: bold; }
+
+        .tranche-head { padding: 10px 16px; border-radius: 14px 14px 0 0; font-weight: bold; color: #fff; display:flex; justify-content:space-between; align-items:center; }
+        .tranche-body { background: rgba(0,0,0,0.03); border-radius: 0 0 14px 14px; padding: 12px 16px; margin-bottom: 16px; }
+        .tranche-row { display:flex; justify-content:space-between; padding: 6px 0; font-size: 0.9em; border-bottom: 1px solid var(--border); }
+        .tranche-row:last-child { border-bottom:none; }
+        .tranche-total { display:flex; justify-content:space-between; background: rgba(0,0,0,0.05); padding: 8px 12px; border-radius: 10px; margin-top: 8px; font-weight: bold; }
+
+        .obj-card { background: var(--surface); border-radius: 18px; padding: 14px 16px; margin-bottom: 12px; box-shadow: var(--card-shadow); border-left: 5px solid var(--primary); }
+        .mood-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+        .mood-btn { font-size: 1.5rem; padding: 8px 12px; border-radius: 14px; background: rgba(0,0,0,0.04); border: 2px solid transparent; }
+        .mood-btn.sel { border-color: var(--primary); background: rgba(103,148,54,0.15); }
+        .event-row { display:flex; align-items:center; gap:10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .event-row:last-child { border-bottom: none; }
+        .event-dot { width: 12px; height:12px; border-radius:50%; flex-shrink:0; }
+        .settings-section { margin-bottom: 22px; }
+        .settings-section h4 { font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; }
+        .cfg-row { display:flex; gap:8px; margin-bottom: 8px; align-items:center; }
+        .cfg-row input { margin-bottom: 0; }
+        .theme-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .theme-swatch { border-radius: 14px; padding: 10px 4px; text-align:center; cursor:pointer; border: 2px solid transparent; font-size: 0.7em; font-weight: bold; }
+        .theme-swatch.sel { border-color: var(--primary); }
+        .swatch-dot { display:flex; gap:3px; justify-content:center; margin-bottom:5px; }
+        .swatch-dot span { width: 14px; height: 14px; border-radius: 50%; display:inline-block; }
+        .admin-badge { background: linear-gradient(135deg,#FFD700,#FFA500); color:#000; padding: 3px 10px; border-radius: 12px; font-size: 0.75em; font-weight:bold; }
+        .toast-msg { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--text); color: var(--surface); padding: 10px 20px; border-radius: 30px; font-size: 0.85em; opacity:0; transition: 0.25s; z-index: 9000; pointer-events:none; white-space:nowrap; }
+        .toast-msg.show { opacity:1; transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -138,68 +153,74 @@
     <div id="auth-screen">
         <div class="auth-box">
             <h1 style="color: var(--primary); margin-bottom: 5px;">Vie Équilibrée</h1>
-            <p style="margin-bottom: 30px; color: var(--text-muted);">Connexion sécurisée</p>
+            <p style="margin-bottom: 30px; color: var(--text-muted);" id="auth-sub">Connexion sécurisée</p>
+            <input type="text" id="auth-name" placeholder="Prénom" style="display:none;">
             <input type="email" id="auth-email" placeholder="Email">
             <input type="password" id="auth-pwd" placeholder="Mot de passe">
-            <button onclick="appLogin()" style="width: 100%; margin-bottom: 10px; padding: 12px;">Se connecter</button>
-            <div id="auth-error" class="error-msg" style="display: none;"></div>
+            <button onclick="appLogin()" id="auth-btn" style="width: 100%; margin-bottom: 10px; padding: 12px;">Se connecter</button>
+            <button onclick="appGoogleLogin()" class="outline" style="width: 100%; margin-bottom: 10px; padding: 12px;">🌐 Continuer avec Google</button>
+            <div class="auth-switch" onclick="toggleAuthMode()">Pas de compte ? <span>Inscrivez-vous</span></div>
+            <div id="auth-error" class="error-msg" style="display: none; margin-top:15px;"></div>
         </div>
     </div>
 
     <div id="app-container" style="display: none;">
         
-        <!-- SIDEBAR GAUCHE -->
-        <nav class="sidebar">
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+        <nav class="sidebar" id="sidebar">
             <div style="padding: 0 20px 20px;">
                 <h2 style="color: var(--primary); font-size: 1.5rem;">Vie Équilibrée</h2>
                 <div style="font-size: 0.8em; color: var(--text-muted);" id="user-chip"></div>
             </div>
             <h4>Quotidien</h4>
             <a href="#" onclick="nav('jour')" id="nav-jour">☀️ Jour</a>
+            <a href="#" onclick="nav('semaine')" id="nav-semaine">📆 Semaine</a>
             <a href="#" onclick="nav('mois')" id="nav-mois">📅 Mois</a>
             <h4>Finances</h4>
             <a href="#" onclick="nav('courses')" id="nav-courses">🛒 Courses</a>
+            <a href="#" onclick="nav('revenus')" id="nav-revenus">💵 Revenus</a>
+            <a href="#" onclick="nav('stats')" id="nav-stats">📈 Statistiques</a>
             <h4>Gestion</h4>
             <a href="#" onclick="nav('taches')" id="nav-taches">✅ Tâches</a>
+            <a href="#" onclick="nav('objectifs')" id="nav-objectifs">🎯 Objectifs</a>
+            <a href="#" onclick="nav('journal')" id="nav-journal">📝 Journal</a>
             <a href="#" onclick="nav('bienetre')" id="nav-bienetre">🌿 Bien-être</a>
+            <a href="#" onclick="nav('planning')" id="nav-planning">⏰ Planning</a>
             <h4>Compte</h4>
             <a href="#" onclick="nav('settings')" id="nav-settings">⚙️ Paramètres</a>
+            <a href="#" onclick="nav('admin')" id="nav-admin" style="display:none;">👑 Admin <span class="admin-tag">ADMIN</span></a>
             <a href="#" onclick="appLogout()" style="margin-top:20px; color:var(--danger);">🚪 Déconnexion</a>
         </nav>
 
         <div class="main-wrapper">
-            <!-- TOPBAR -->
             <header class="topbar">
-                <div class="flex-between" style="width: 200px;">
+                <div class="flex-between" style="gap:8px;">
+                    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
                     <button class="outline" onclick="changeMonth(-1)">‹</button>
                     <h3 id="current-month-display">Juin 2026</h3>
                     <button class="outline" onclick="changeMonth(1)">›</button>
                 </div>
-                <div class="flex-between">
-                    <div id="sync-status" style="margin-right: 15px; font-size: 0.8em; opacity: 0.8;">Sync ✓</div>
+                <div class="flex-between" style="gap:14px;">
+                    <span class="topbar-clock" id="topbar-clock">--:--</span>
+                    <div id="sync-status" style="font-size: 0.8em; opacity: 0.8;">Sync ✓</div>
                 </div>
             </header>
 
-            <!-- ZONE DE CONTENU CENTRAL -->
-            <main class="content-area" id="main-content">
-                <!-- Rendu JS dynamique -->
-            </main>
+            <main class="content-area" id="main-content"></main>
         </div>
 
-        <aside class="right-panel" id="right-panel">
-            <!-- Rendu JS des widgets de résumé -->
-        </aside>
+        <aside class="right-panel" id="right-panel"></aside>
 
-        <!-- NAVIGATION MOBILE FLOTTANTE -->
         <nav class="bottom-nav">
             <button onclick="nav('jour')" id="mob-jour">📅</button>
             <button onclick="nav('taches')" id="mob-taches">✅</button>
             <button class="fab" onclick="nav('jour')">🌟</button>
             <button onclick="nav('mois')" id="mob-mois">📊</button>
-            <button onclick="nav('settings')" id="mob-settings">⚙️</button>
+            <button onclick="openMobileSidebar()" id="mob-more">☰</button>
         </nav>
     </div>
 
+    <div class="toast-msg" id="toast-msg"></div>
     <script>
         var firebaseConfig = {
             apiKey: "AIzaSyAdfIiIMRevlNcyNhueJq2fzRdD53XBT1I",
@@ -213,49 +234,223 @@
         var auth = firebase.auth();
         var db = firebase.firestore();
 
+        var ADMIN_EMAILS = ['fandryjoh@gmail.com', 'fandryjohprog@gmail.com'];
+        var MNAMES = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        var MSHORT = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+        var DNAMES = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+
+        var authMode = 'login';
+
         var State = {
             uid: null,
             email: null,
             activePage: 'jour',
             activeDate: new Date(),
-            D: {}, 
-            C: {}  
+            D: {},
+            C: {},
+            G: {}
         };
 
         var defaultC = {
+            appName: "Vie Équilibrée",
             dayBudget: 20000,
             coursesMo: 600000,
             savings: 1000000,
-            incRows: [{n: "Revenus", v: 0}],
+            incRows: ["Salaire principal", "GTV / Studio", "iScale", "Autres revenus"],
+            fixedRows: [{n: "Loyer", v: 200000}, {n: "Internet", v: 50000}, {n: "Entretien moto", v: 70000}],
+            careRows: [{n: "Vêtements", v: 30000}, {n: "Chaussures", v: 30000}, {n: "Beauté", v: 30000}],
+            weekRows: [{n: "Chilling", v: 40000}],
             habitRows: ["Méditation", "Sport", "Lecture", "Eau"],
             theme: "nature-vibrant",
             fontSize: 16
         };
+        var defaultG = { taches: [], objectifs: [], journal: {}, events: [] };
 
         var saveTimeout = null;
 
-        function safeStr(str) { return str ? String(str).replace(/'/g, "\\'") : ""; }
+        /* ============ HELPERS ============ */
+        function escHtml(str) {
+            if (str === null || str === undefined) return "";
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
         function fmtAr(num) { return isNaN(num) ? "0 Ar" : Number(num).toLocaleString('fr-FR') + " Ar"; }
+        function fmtNum(num) { return isNaN(num) ? "0" : Number(num).toLocaleString('fr-FR'); }
         function getMonthKey(date) { var y = date.getFullYear(); var m = date.getMonth() + 1; return y + "-" + (m < 10 ? "0" + m : m); }
-        
+        function todayDateKey() {
+            var d = State.activeDate;
+            var dd = d.getDate(); var mm = d.getMonth() + 1; var yy = d.getFullYear();
+            return yy + "-" + (mm < 10 ? "0" + mm : mm) + "-" + (dd < 10 ? "0" + dd : dd);
+        }
+        function p2(n) { return n < 10 ? "0" + n : "" + n; }
+
+        function ensureC() {
+            if (!State.C) State.C = JSON.parse(JSON.stringify(defaultC));
+            if (!Array.isArray(State.C.incRows)) State.C.incRows = defaultC.incRows.slice();
+            if (!Array.isArray(State.C.fixedRows)) State.C.fixedRows = JSON.parse(JSON.stringify(defaultC.fixedRows));
+            if (!Array.isArray(State.C.careRows)) State.C.careRows = JSON.parse(JSON.stringify(defaultC.careRows));
+            if (!Array.isArray(State.C.weekRows)) State.C.weekRows = JSON.parse(JSON.stringify(defaultC.weekRows));
+            if (!Array.isArray(State.C.habitRows)) State.C.habitRows = defaultC.habitRows.slice();
+            if (typeof State.C.dayBudget !== 'number') State.C.dayBudget = defaultC.dayBudget;
+            if (typeof State.C.coursesMo !== 'number') State.C.coursesMo = defaultC.coursesMo;
+            if (typeof State.C.savings !== 'number') State.C.savings = defaultC.savings;
+            if (!State.C.appName) State.C.appName = defaultC.appName;
+        }
+        function ensureG() {
+            if (!State.G) State.G = JSON.parse(JSON.stringify(defaultG));
+            if (!Array.isArray(State.G.taches)) State.G.taches = [];
+            if (!Array.isArray(State.G.objectifs)) State.G.objectifs = [];
+            if (!State.G.journal) State.G.journal = {};
+            if (!Array.isArray(State.G.events)) State.G.events = [];
+        }
+
         function initMonthData(key) {
-            if (!State.D[key]) State.D[key] = { days: {}, courses: [] };
-            return State.D[key];
+            if (!State.D[key]) State.D[key] = { days: {}, courses: [], income: [] };
+            var md = State.D[key];
+            if (!md.days) md.days = {};
+            if (!md.courses) md.courses = [];
+            if (!md.income) md.income = [];
+            return md;
         }
         function getDayData(dayInt) {
             var mk = getMonthKey(State.activeDate);
             var md = initMonthData(mk);
-            if (!md.days[dayInt]) md.days[dayInt] = { spendings: [], habits: [] };
-            return md.days[dayInt];
+            if (!md.days[dayInt]) md.days[dayInt] = { spendings: [], habits: [], tasks: [], notes: '', mood: '', sleep: 0, water: 0, sport: 0 };
+            var dd = md.days[dayInt];
+            if (!dd.spendings) dd.spendings = [];
+            if (!dd.habits) dd.habits = [];
+            if (!dd.tasks) dd.tasks = [];
+            if (dd.notes === undefined) dd.notes = '';
+            if (dd.mood === undefined) dd.mood = '';
+            if (dd.sleep === undefined) dd.sleep = 0;
+            if (dd.water === undefined) dd.water = 0;
+            if (dd.sport === undefined) dd.sport = 0;
+            return dd;
+        }
+        function dayHasData(dayInt, mk) {
+            var md = State.D[mk];
+            if (!md || !md.days[dayInt]) return false;
+            var dd = md.days[dayInt];
+            return (dd.spendings && dd.spendings.length > 0) || (dd.habits && dd.habits.indexOf(true) >= 0) || (dd.tasks && dd.tasks.length > 0);
+        }
+        function daySpentTotal(dayInt, mk) {
+            var md = State.D[mk];
+            if (!md || !md.days[dayInt]) return 0;
+            var dd = md.days[dayInt], s = 0;
+            for (var i = 0; i < dd.spendings.length; i++) s += Number(dd.spendings[i].amt || 0);
+            return s;
+        }
+        function incomeTotalForMonth(mk) {
+            ensureC();
+            var md = State.D[mk];
+            if (!md || !md.income) return 0;
+            var s = 0;
+            for (var i = 0; i < md.income.length; i++) s += Number(md.income[i] || 0);
+            return s;
+        }
+        function dimeForMonth(mk) { return Math.round(incomeTotalForMonth(mk) / 10); }
+        function fixedTotal() { ensureC(); var s = 0; for (var i = 0; i < State.C.fixedRows.length; i++) s += Number(State.C.fixedRows[i].v || 0); return s; }
+        function careTotal() { ensureC(); var s = 0; for (var i = 0; i < State.C.careRows.length; i++) s += Number(State.C.careRows[i].v || 0); return s; }
+        function weekTotal() { ensureC(); var s = 0; for (var i = 0; i < State.C.weekRows.length; i++) s += Number(State.C.weekRows[i].v || 0); return s; }
+        function spentTotalForMonth(mk) {
+            var md = State.D[mk];
+            if (!md) return 0;
+            var s = 0;
+            for (var d in md.days) s += daySpentTotal(parseInt(d, 10), mk);
+            return s;
+        }
+        function coursesSpentForMonth(mk) {
+            var md = State.D[mk];
+            if (!md || !md.courses) return 0;
+            var s = 0;
+            for (var i = 0; i < md.courses.length; i++) s += Number(md.courses[i].amt || 0);
+            return s;
+        }
+        function habitsStatsForMonth(mk) {
+            var md = State.D[mk];
+            if (!md) return { done: 0, total: 0 };
+            var done = 0, total = 0, nHab = State.C.habitRows.length;
+            for (var d in md.days) {
+                var dd = md.days[d];
+                if (dd.habits) {
+                    for (var i = 0; i < nHab; i++) { total++; if (dd.habits[i]) done++; }
+                }
+            }
+            return { done: done, total: total };
+        }
+        function daysWithDataCount(mk) {
+            var md = State.D[mk];
+            if (!md) return 0;
+            var c = 0;
+            for (var d in md.days) if (dayHasData(parseInt(d, 10), mk)) c++;
+            return c;
+        }
+        function avgDaySpend(mk) {
+            var c = daysWithDataCount(mk);
+            if (!c) return null;
+            return Math.round(spentTotalForMonth(mk) / c);
         }
 
-        auth.onAuthStateChanged(function(user) {
+        function toast(msg) {
+            var t = document.getElementById('toast-msg');
+            if (!t) return;
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._tmr);
+            t._tmr = setTimeout(function () { t.classList.remove('show'); }, 2200);
+        }
+
+        /* ============ AUTH ============ */
+        function toggleAuthMode() {
+            authMode = authMode === 'login' ? 'register' : 'login';
+            var isReg = authMode === 'register';
+            document.getElementById('auth-name').style.display = isReg ? 'block' : 'none';
+            document.getElementById('auth-btn').innerText = isReg ? "Créer mon compte" : "Se connecter";
+            document.getElementById('auth-sub').innerText = isReg ? "Créer un compte" : "Connexion sécurisée";
+            document.querySelector('.auth-switch').innerHTML = isReg ? 'Déjà un compte ? <span>Connexion</span>' : 'Pas de compte ? <span>Inscrivez-vous</span>';
+            document.getElementById('auth-error').style.display = 'none';
+        }
+        function appLogin() {
+            var errDiv = document.getElementById('auth-error');
+            errDiv.style.display = 'none';
+            var e = document.getElementById('auth-email').value;
+            var p = document.getElementById('auth-pwd').value;
+            if (!e || !p) { errDiv.innerText = "Remplissez tous les champs."; errDiv.style.display = 'block'; return; }
+            if (authMode === 'register') {
+                var name = document.getElementById('auth-name').value;
+                auth.createUserWithEmailAndPassword(e, p).then(function (cred) {
+                    if (name) return cred.user.updateProfile({ displayName: name });
+                }).catch(function (err) {
+                    errDiv.innerText = err.message;
+                    errDiv.style.display = 'block';
+                });
+            } else {
+                auth.signInWithEmailAndPassword(e, p).catch(function (err) {
+                    errDiv.innerText = err.message;
+                    errDiv.style.display = 'block';
+                });
+            }
+        }
+        function appGoogleLogin() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(function (err) {
+                if (err.code !== 'auth/popup-closed-by-user') {
+                    var errDiv = document.getElementById('auth-error');
+                    errDiv.innerText = err.message;
+                    errDiv.style.display = 'block';
+                }
+            });
+        }
+        function appLogout() { auth.signOut(); }
+
+        auth.onAuthStateChanged(function (user) {
             if (user) {
                 State.uid = user.uid;
                 State.email = user.email;
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
-                document.getElementById('user-chip').innerText = user.email;
+                document.getElementById('user-chip').innerText = user.displayName || user.email;
+                var navAdmin = document.getElementById('nav-admin');
+                if (navAdmin) navAdmin.style.display = ADMIN_EMAILS.indexOf(user.email) >= 0 ? 'block' : 'none';
                 loadData();
             } else {
                 document.getElementById('auth-screen').style.display = 'flex';
@@ -263,55 +458,47 @@
             }
         });
 
-        function appLogin() {
-            var e = document.getElementById('auth-email').value;
-            var p = document.getElementById('auth-pwd').value;
-            auth.signInWithEmailAndPassword(e, p).catch(function(err) {
-                var errDiv = document.getElementById('auth-error');
-                errDiv.innerText = err.message;
-                errDiv.style.display = 'block';
-            });
-        }
-        function appLogout() { auth.signOut(); }
-
+        /* ============ DATA LOAD / SAVE ============ */
         function loadData() {
-            db.collection("users").doc(State.uid).collection("data").doc("main").get().then(function(doc) {
+            db.collection("users").doc(State.uid).collection("data").doc("main").get().then(function (doc) {
                 if (doc.exists) {
                     var data = doc.data();
                     State.C = data.C || JSON.parse(JSON.stringify(defaultC));
                     State.D = data.D || {};
+                    State.G = data.G || JSON.parse(JSON.stringify(defaultG));
                 } else {
                     State.C = JSON.parse(JSON.stringify(defaultC));
                     State.D = {};
+                    State.G = JSON.parse(JSON.stringify(defaultG));
                 }
+                ensureC(); ensureG();
                 applyTheme();
-                
-                // FIX CRITIQUE : Contournement du blocage iframe
+
                 var lastPage = 'jour';
-                try {
-                    lastPage = localStorage.getItem('vieEqLastPage') || 'jour';
-                } catch(e) {
-                    console.warn("localStorage bloqué, retour à 'jour'");
-                }
+                try { lastPage = localStorage.getItem('vieEqLastPage') || 'jour'; } catch (e) { console.warn("localStorage bloqué"); }
                 nav(lastPage);
-                
-            }).catch(function(err) {
+                setInterval(tickClock, 30000);
+                tickClock();
+            }).catch(function (err) {
                 var c = document.getElementById('main-content');
-                c.innerHTML = "<div class='error-msg'>Erreur de base de données: " + err.message + "</div>";
+                c.innerHTML = "<div class='error-msg'>Erreur de base de données: " + escHtml(err.message) + "</div>";
             });
         }
 
         function triggerSave() {
             document.getElementById('sync-status').innerText = "Syncing...";
             if (saveTimeout) clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(function() {
+            saveTimeout = setTimeout(function () {
                 db.collection("users").doc(State.uid).collection("data").doc("main").set({
-                    C: State.C, D: State.D
-                }).then(function() {
+                    C: State.C, D: State.D, G: State.G
+                }).then(function () {
                     document.getElementById('sync-status').innerText = "Sync ✓";
-                    renderRightPanel(); // Maj du split-screen
+                    renderRightPanel();
+                }).catch(function (err) {
+                    document.getElementById('sync-status').innerText = "Erreur sync";
+                    console.error(err);
                 });
-            }, 1000);
+            }, 800);
         }
 
         function applyTheme() {
@@ -320,31 +507,60 @@
             document.body.style.fontSize = fSize + 'px';
         }
 
+        function tickClock() {
+            var now = new Date();
+            var el = document.getElementById('topbar-clock');
+            if (el) el.textContent = p2(now.getHours()) + ':' + p2(now.getMinutes());
+        }
+
+        /* ============ MOBILE SIDEBAR ============ */
+        function openMobileSidebar() {
+            document.getElementById('sidebar').classList.add('mobile-open');
+            document.getElementById('sidebar-overlay').classList.add('show');
+        }
+        function closeMobileSidebar() {
+            document.getElementById('sidebar').classList.remove('mobile-open');
+            document.getElementById('sidebar-overlay').classList.remove('show');
+        }
+
+        /* ============ NAVIGATION ============ */
         function nav(page) {
             State.activePage = page;
-            
-            // Sauvegarde de la page visitée (sécurisé)
-            try { localStorage.setItem('vieEqLastPage', page); } catch(e) {}
+            try { localStorage.setItem('vieEqLastPage', page); } catch (e) {}
+            closeMobileSidebar();
 
             var links = document.querySelectorAll('.sidebar a');
-            for(var i=0; i<links.length; i++) links[i].classList.remove('active');
+            for (var i = 0; i < links.length; i++) links[i].classList.remove('active');
             var activeLink = document.getElementById('nav-' + page);
-            if(activeLink) activeLink.classList.add('active');
+            if (activeLink) activeLink.classList.add('active');
+            var mobBtns = document.querySelectorAll('.bottom-nav button');
+            for (var j = 0; j < mobBtns.length; j++) mobBtns[j].classList.remove('active');
+            var mobActive = document.getElementById('mob-' + page);
+            if (mobActive) mobActive.classList.add('active');
 
-            var mNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-            document.getElementById('current-month-display').innerText = mNames[State.activeDate.getMonth()] + " " + State.activeDate.getFullYear();
+            document.getElementById('current-month-display').innerText = MNAMES[State.activeDate.getMonth()] + " " + State.activeDate.getFullYear();
 
             var content = document.getElementById('main-content');
-            content.innerHTML = ""; 
+            content.innerHTML = "";
 
             try {
                 if (page === 'jour') renderJour(content);
+                else if (page === 'semaine') renderSemaine(content);
                 else if (page === 'mois') renderMois(content);
                 else if (page === 'courses') renderCourses(content);
+                else if (page === 'revenus') renderRevenus(content);
+                else if (page === 'stats') renderStats(content);
+                else if (page === 'taches') renderTaches(content);
+                else if (page === 'objectifs') renderObjectifs(content);
+                else if (page === 'journal') renderJournal(content);
+                else if (page === 'bienetre') renderBienetre(content);
+                else if (page === 'planning') renderPlanning(content);
                 else if (page === 'settings') renderSettings(content);
-                else content.innerHTML = "<div class='card'><p>Page en construction ("+page+").</p></div>";
+                else if (page === 'admin') renderAdmin(content);
+                else content.innerHTML = "<div class='card'><p>Page introuvable (" + escHtml(page) + ").</p></div>";
             } catch (e) {
-                content.innerHTML = "<div class='error-msg'>Erreur de rendu: " + e.message + "</div>";
+                console.error(e);
+                content.innerHTML = "<div class='error-msg'>Erreur de rendu: " + escHtml(e.message) + "</div>";
             }
             renderRightPanel();
         }
@@ -353,141 +569,540 @@
             State.activeDate.setMonth(State.activeDate.getMonth() + delta);
             nav(State.activePage);
         }
+        function setDate(d) { State.activeDate.setDate(d); nav('jour'); }
 
+        /* ============ PAGE: JOUR ============ */
         function renderJour(container) {
             var h = [];
             var year = State.activeDate.getFullYear();
             var month = State.activeDate.getMonth();
             var daysInMonth = new Date(year, month + 1, 0).getDate();
             var todayInt = State.activeDate.getDate();
-
-            // Calendrier horizontal
-            h.push("<div class='calendar-strip'>");
             var mk = getMonthKey(State.activeDate);
             var md = initMonthData(mk);
+
+            h.push("<div class='calendar-strip'>");
             for (var i = 1; i <= daysInMonth; i++) {
                 var dClass = "day-box";
                 if (i === todayInt) dClass += " active";
-                if (md.days[i] && md.days[i].spendings && md.days[i].spendings.length > 0) dClass += " has-data";
-                h.push("<div class='" + dClass + "' onclick=\"setDate(" + i + ")\">" + i + "<div class='dot'></div></div>");
+                if (dayHasData(i, mk)) dClass += " has-data";
+                h.push("<div class='" + dClass + "' onclick='setDate(" + i + ")'>" + i + "<div class='dot'></div></div>");
             }
             h.push("</div>");
 
             var dayData = getDayData(todayInt);
+            var hDone = 0;
+            for (var hh = 0; hh < dayData.habits.length; hh++) if (dayData.habits[hh]) hDone++;
+            var hTotal = State.C.habitRows.length;
 
-            // Icones du haut (style Option 2)
-            h.push("<div class='icon-row'><div class='icon-circle'>🧘</div><div class='icon-circle' style='color:var(--secondary);'>🏃</div><div class='icon-circle' style='color:var(--accent);'>💧</div><div class='icon-circle' style='color:var(--text);'>📖</div></div>");
+            h.push("<div class='icon-row'>");
+            h.push("<div class='icon-circle'>" + (dayData.mood || '🧘') + "</div>");
+            h.push("<div class='icon-circle' style='color:var(--secondary);'>" + (dayData.sport > 0 ? '🏃' : '⭕') + "</div>");
+            h.push("<div class='icon-circle' style='color:var(--accent);'>💧 " + (dayData.water || 0) + "</div>");
+            h.push("<div class='icon-circle' style='color:var(--text);'>" + hDone + "/" + hTotal + "</div>");
+            h.push("</div>");
 
             h.push("<div class='grid-2'>");
 
-            // Budget Rapide
+            // BUDGET
             h.push("<div class='card'><h3>💰 Budget du " + todayInt + "</h3>");
             var env = State.C.dayBudget || 20000;
-            var spent = 0;
-            if (dayData.spendings) {
-                for (var j=0; j<dayData.spendings.length; j++) spent += Number(dayData.spendings[j].amt || 0);
-            }
+            var spent = daySpentTotal(todayInt, mk);
             var reste = env - spent;
-            h.push("<h2 style='color:" + (reste<0?'var(--danger)':'var(--text)') + "'>Reste : " + fmtAr(reste) + "</h2>");
-            h.push("<div class='progress-bar' style='margin-bottom:15px;'><div class='progress-fill' style='width:" + Math.min(100, (spent/env)*100) + "%'></div></div>");
-            
-            h.push("<div class='flex-between'><input type='text' id='dep-desc' placeholder='Ex: Repas' style='width:55%;'><input type='number' id='dep-amt' placeholder='Ar' style='width:40%;'></div>");
-            h.push("<button onclick=\"addSpending(" + todayInt + ")\" style='width:100%; margin-bottom:10px;'>Ajouter</button>");
-            
-            if (dayData.spendings) {
-                for (var k=0; k<dayData.spendings.length; k++) {
-                    var s = dayData.spendings[k];
-                    h.push("<div class='flex-between' style='font-size:0.9em; margin-bottom:5px; padding:5px; background:rgba(0,0,0,0.03); border-radius:8px;'><span>" + s.desc + "</span><span>" + fmtAr(s.amt) + " <b style='color:var(--danger);cursor:pointer;' onclick=\"delSpending(" + todayInt + ", " + k + ")\">✕</b></span></div>");
-                }
+            h.push("<h2 style='color:" + (reste < 0 ? 'var(--danger)' : 'var(--text)') + "'>Reste : " + fmtAr(reste) + "</h2>");
+            h.push("<div class='progress-bar' style='margin-bottom:15px;'><div class='progress-fill' style='width:" + Math.min(100, (spent / env) * 100) + "%'></div></div>");
+            h.push("<div class='flex-between' style='gap:8px;'><input type='text' id='dep-desc' placeholder='Ex: Repas' style='width:55%;'><input type='number' id='dep-amt' placeholder='Ar' style='width:40%;'></div>");
+            h.push("<button onclick='addSpending(" + todayInt + ")' style='width:100%; margin-bottom:10px;'>Ajouter</button>");
+            for (var k = 0; k < dayData.spendings.length; k++) {
+                var s = dayData.spendings[k];
+                h.push("<div class='flex-between' style='font-size:0.9em; margin-bottom:5px; padding:5px; background:rgba(0,0,0,0.03); border-radius:8px;'><span>" + escHtml(s.desc) + "</span><span>" + fmtAr(s.amt) + " <b style='color:var(--danger);cursor:pointer;' onclick='delSpending(" + todayInt + "," + k + ")'>✕</b></span></div>");
             }
             h.push("</div>");
 
-            // Habitudes / Défis
+            // HABITUDES
             h.push("<div class='card'><h3>🏆 Mes Défis</h3>");
-            if (State.C.habitRows) {
-                for (var hidx=0; hidx<State.C.habitRows.length; hidx++) {
-                    var hName = State.C.habitRows[hidx];
-                    var isChecked = dayData.habits[hidx] ? "checked" : "";
-                    h.push("<div style='margin-bottom:10px; background:rgba(0,0,0,0.03); padding:10px; border-radius:12px;'><label style='display:flex; align-items:center; cursor:pointer;'><input type='checkbox' " + isChecked + " onchange=\"toggleHabit(" + todayInt + ", " + hidx + ", this.checked)\" style='width:auto; margin:0 10px 0 0;'> " + hName + "</label></div>");
-                }
+            for (var hidx = 0; hidx < State.C.habitRows.length; hidx++) {
+                var hName = State.C.habitRows[hidx];
+                var isChecked = dayData.habits[hidx] ? "checked" : "";
+                h.push("<div style='margin-bottom:10px; background:rgba(0,0,0,0.03); padding:10px; border-radius:12px;'><label style='display:flex; align-items:center; cursor:pointer;'><input type='checkbox' " + isChecked + " onchange='toggleHabit(" + todayInt + "," + hidx + ",this.checked)' style='width:auto; margin:0 10px 0 0;'> " + escHtml(hName) + "</label></div>");
             }
             h.push("</div>");
 
-            h.push("</div>"); // Fin Grid
+            h.push("</div>"); // fin grid-2
+
+            // TACHES DU JOUR
+            h.push("<div class='card'><h3>✅ Tâches du jour</h3>");
+            for (var ti = 0; ti < dayData.tasks.length; ti++) {
+                var task = dayData.tasks[ti];
+                h.push("<div class='task-item " + (task.done ? 'done' : '') + "'><input type='checkbox' " + (task.done ? 'checked' : '') + " onchange='toggleDayTask(" + todayInt + "," + ti + ",this.checked)' style='width:auto;margin-right:10px;'><span class='tname'>" + escHtml(task.n) + "</span><button class='small danger' onclick='delDayTask(" + todayInt + "," + ti + ")'>✕</button></div>");
+            }
+            h.push("<div class='flex-between' style='gap:8px; margin-top:10px;'><input type='text' id='dtask-name' placeholder='Nouvelle tâche…' style='margin-bottom:0;'><button onclick='addDayTask(" + todayInt + ")'>+</button></div>");
+            h.push("</div>");
+
+            // BIEN-ETRE RAPIDE
+            h.push("<div class='card'><h3>🌿 Bien-être express</h3>");
+            h.push("<div class='grid-2'>");
+            h.push("<div><label style='font-size:0.85em;color:var(--text-muted);'>Sommeil (h)</label><input type='number' min='0' max='24' value='" + (dayData.sleep || '') + "' onchange='setBienetreField(" + todayInt + ",\"sleep\",this.value)'></div>");
+            h.push("<div><label style='font-size:0.85em;color:var(--text-muted);'>Eau (verres)</label><input type='number' min='0' value='" + (dayData.water || '') + "' onchange='setBienetreField(" + todayInt + ",\"water\",this.value)'></div>");
+            h.push("</div></div>");
+
+            // NOTES
+            h.push("<div class='card'><h3>📝 Notes du jour</h3><textarea onchange='setDayNotes(" + todayInt + ",this.value)' placeholder='Bilan, priorités, gratitude…'>" + escHtml(dayData.notes) + "</textarea></div>");
+
             container.innerHTML = h.join("");
         }
 
-        function renderSettings(container) { 
+        /* ============ PAGE: SEMAINE ============ */
+        function renderSemaine(container) {
             var h = [];
-            h.push("<div class='card'><h3>🎨 Paramètres d'Affichage</h3>");
-            
-            // Gestion de la taille de police
-            var fSize = State.C.fontSize || 16;
-            h.push("<div class='flex-between' style='margin-bottom:15px;'><label>Taille du texte : <strong>" + fSize + "px</strong></label>");
-            h.push("<div><button class='outline' onclick='changeFontSize(-1)'>A-</button> <button class='outline' onclick='changeFontSize(1)'>A+</button></div></div>");
+            var year = State.activeDate.getFullYear();
+            var month = State.activeDate.getMonth();
+            var daysInMonth = new Date(year, month + 1, 0).getDate();
+            var todayInt = State.activeDate.getDate();
+            var dow = new Date(year, month, todayInt).getDay();
+            dow = dow === 0 ? 6 : dow - 1;
+            var monday = Math.max(1, todayInt - dow);
+            var mk = getMonthKey(State.activeDate);
 
-            // Nouveaux Thèmes
-            h.push("<label>Thème Visuel:</label><select id='set-theme' onchange='updateTheme(this.value)'>");
-            h.push("<option value='nature-vibrant' "+(State.C.theme==='nature-vibrant'?'selected':'')+">Nature Vibrant (Défaut)</option>");
-            h.push("<option value='ocean-ice' "+(State.C.theme==='ocean-ice'?'selected':'')+">Ocean Ice</option>");
-            h.push("<option value='deep-blue' "+(State.C.theme==='deep-blue'?'selected':'')+">Deep Blue</option>");
-            h.push("<option value='terracotta' "+(State.C.theme==='terracotta'?'selected':'')+">Terracotta</option>");
-            h.push("<option value='neutral-nude' "+(State.C.theme==='neutral-nude'?'selected':'')+">Neutral Nude</option>");
-            h.push("<option value='forest' "+(State.C.theme==='forest'?'selected':'')+">Forest</option>");
-            h.push("<option value='dark' "+(State.C.theme==='dark'?'selected':'')+">Classique Dark</option>");
-            h.push("</select>");
+            var hSum = 0, hTot = 0, spendSum = 0;
+            h.push("<div class='card'><h3>📆 Cette semaine</h3>");
+            for (var i = 0; i < 7; i++) {
+                var dd = monday + i;
+                if (dd < 1 || dd > daysInMonth) continue;
+                var dayData = getDayData(dd);
+                var dHabDone = 0;
+                for (var hh = 0; hh < dayData.habits.length; hh++) if (dayData.habits[hh]) dHabDone++;
+                hSum += dHabDone; hTot += State.C.habitRows.length;
+                var sp = daySpentTotal(dd, mk);
+                spendSum += sp;
+                var dowName = DNAMES[new Date(year, month, dd).getDay() === 0 ? 6 : new Date(year, month, dd).getDay() - 1];
+                var isToday = dd === todayInt;
+                h.push("<div class='flex-between' style='padding:8px 0;" + (isToday ? "background:rgba(103,148,54,0.08);border-radius:10px;padding:8px 10px;" : "") + "cursor:pointer;' onclick='setDate(" + dd + ")'>");
+                h.push("<span style='" + (isToday ? "font-weight:bold;color:var(--primary);" : "") + "'>" + dowName + " " + dd + "</span>");
+                h.push("<span class='mono' style='font-size:0.85em;color:var(--text-muted);'>✓" + dHabDone + "/" + State.C.habitRows.length + " · " + fmtNum(sp) + " Ar</span>");
+                h.push("</div>");
+            }
             h.push("</div>");
 
-            h.push("<div class='card'><h3>⚙️ Configuration Budget</h3>");
-            h.push("<label>Budget Journalier (Ar):</label><input type='number' id='set-day' value='"+(State.C.dayBudget||0)+"' onchange='updateConfig(\"dayBudget\", this.value)'>");
-            h.push("<label>Enveloppe Courses (Ar):</label><input type='number' id='set-courses' value='"+(State.C.coursesMo||0)+"' onchange='updateConfig(\"coursesMo\", this.value)'>");
+            var wkScore = hTot > 0 ? Math.round((hSum / hTot) * 100) : 0;
+            h.push("<div class='card' style='text-align:center;'><h3 style='justify-content:center;'>🏅 Score de la semaine</h3>");
+            h.push("<div class='score-circle'><strong style='font-size:1.8em;'>" + wkScore + "%</strong></div>");
+            h.push("<p class='text-center mono'>" + fmtNum(spendSum) + " Ar dépensés</p></div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: MOIS ============ */
+        function renderMois(container) {
+            var h = [];
+            var mk = getMonthKey(State.activeDate);
+            var daysInMonth = new Date(State.activeDate.getFullYear(), State.activeDate.getMonth() + 1, 0).getDate();
+            var inc = incomeTotalForMonth(mk);
+            var dime = dimeForMonth(mk);
+            var spend = spentTotalForMonth(mk);
+            var fixed = fixedTotal(), care = careTotal(), week4 = weekTotal() * 4, dayMo = State.C.dayBudget * daysInMonth;
+            var cSpend = coursesSpentForMonth(mk);
+            var grandTotal = fixed + care + week4 + dayMo + State.C.savings + State.C.coursesMo + dime;
+            var hStats = habitsStatsForMonth(mk);
+            var hPct = hStats.total > 0 ? Math.round((hStats.done / hStats.total) * 100) : 0;
+            var budPct = inc > 0 ? Math.min(100, Math.round((spend / inc) * 100)) : 0;
+
+            h.push("<div class='card'><h3>🗓 " + MNAMES[State.activeDate.getMonth()] + " " + State.activeDate.getFullYear() + "</h3>");
+            h.push("<div class='grid-2'>");
+            h.push("<div><span style='font-size:0.8em;color:var(--text-muted);'>Habitudes</span><div class='progress-bar'><div class='progress-fill' style='width:" + hPct + "%'></div></div><span class='mono' style='font-size:0.8em;'>" + hPct + "%</span></div>");
+            h.push("<div><span style='font-size:0.8em;color:var(--text-muted);'>Budget consommé</span><div class='progress-bar'><div class='progress-fill' style='width:" + budPct + "%;background:var(--danger);'></div></div><span class='mono' style='font-size:0.8em;'>" + budPct + "%</span></div>");
+            h.push("</div></div>");
+
+            h.push("<div class='grid-2'>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Revenus</span><h2 class='mono' style='color:var(--green);'>" + fmtNum(inc) + "</h2></div>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Dépensé</span><h2 class='mono'>" + fmtNum(spend) + "</h2></div>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Solde</span><h2 class='mono' style='color:" + (inc - spend >= 0 ? 'var(--green)' : 'var(--danger)') + "'>" + fmtNum(Math.abs(inc - spend)) + "</h2></div>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Dîme ✝️</span><h2 class='mono' style='color:var(--accent);'>" + fmtNum(dime) + "</h2></div>");
+            h.push("</div>");
+
+            function trancheBlock(color, title, rows, total, addFn) {
+                h.push("<div class='tranche-head' style='background:" + color + ";'><span>" + title + "</span>" + (addFn ? "<button class='small' style='background:rgba(255,255,255,0.25);' onclick='" + addFn + "'>+</button>" : "") + "</div><div class='tranche-body'>");
+                for (var ri = 0; ri < rows.length; ri++) h.push("<div class='tranche-row'><span>" + escHtml(rows[ri].n) + "</span><span class='mono'>" + fmtNum(rows[ri].v) + " Ar</span></div>");
+                h.push("<div class='tranche-total'><span>Sous-total</span><span class='mono'>" + fmtNum(total) + " Ar</span></div></div>");
+            }
+            trancheBlock("var(--primary)", "🏠 Charges fixes + Épargne + Dîme", State.C.fixedRows.concat([{n: "Épargne", v: State.C.savings}, {n: "Dîme", v: dime}]), fixed + State.C.savings + dime, "addRow(\"fixedRows\")");
+            trancheBlock("var(--secondary)", "💅 Caring mensuel", State.C.careRows, care, "addRow(\"careRows\")");
+            var wkRowsDisp = [];
+            for (var wi = 0; wi < State.C.weekRows.length; wi++) wkRowsDisp.push({n: State.C.weekRows[wi].n + " × 4", v: State.C.weekRows[wi].v * 4});
+            trancheBlock("var(--accent)", "🍸 Hebdomadaire × 4", wkRowsDisp, week4, "addRow(\"weekRows\")");
+            trancheBlock("var(--gold)", "📦 Journalier × " + daysInMonth + " j", [{n: fmtNum(State.C.dayBudget) + " Ar × " + daysInMonth, v: dayMo}], dayMo, null);
+
+            h.push("<div class='card'><h3>🛒 Courses</h3><div class='tranche-row'><span>Budget prévu</span><span class='mono'>" + fmtNum(State.C.coursesMo) + " Ar</span></div><div class='tranche-row'><span>Dépensé réel</span><span class='mono'>" + fmtNum(cSpend) + " Ar</span></div></div>");
+
+            h.push("<div class='card' style='background:var(--text);color:var(--surface);'><h3 style='color:var(--surface);'>📊 Total prévisionnel</h3><h2 class='mono'>" + fmtNum(grandTotal) + " Ar</h2>");
+            if (inc) {
+                var marge = inc - grandTotal;
+                h.push("<p style='margin-top:8px;'>Marge libre: <strong class='mono' style='color:" + (marge >= 0 ? 'var(--green)' : 'var(--danger)') + "'>" + fmtNum(Math.abs(marge)) + " Ar</strong></p>");
+            }
+            h.push("</div>");
+
+            var avgD = avgDaySpend(mk);
+            if (avgD && avgD > State.C.dayBudget) {
+                h.unshift("<div class='error-msg'>⚠️ Moyenne réelle (" + fmtNum(avgD) + " Ar) dépasse le budget journalier prévu (" + fmtNum(State.C.dayBudget) + " Ar).</div>");
+            }
+
+            // Comparaison mois précédent
+            var prevDate = new Date(State.activeDate.getFullYear(), State.activeDate.getMonth() - 1, 1);
+            var prevMk = getMonthKey(prevDate);
+            var prevInc = incomeTotalForMonth(prevMk), prevSpend = spentTotalForMonth(prevMk);
+            if (prevInc || prevSpend) {
+                var incDiff = inc - prevInc, depDiff = spend - prevSpend;
+                h.push("<div class='card'><h3>↕️ vs " + MSHORT[prevDate.getMonth()] + "</h3>");
+                h.push("<div class='tranche-row'><span>Revenus</span><span class='mono'>" + fmtNum(prevInc) + " → " + fmtNum(inc) + " (" + (incDiff >= 0 ? "+" : "") + fmtNum(incDiff) + ")</span></div>");
+                h.push("<div class='tranche-row'><span>Dépenses</span><span class='mono'>" + fmtNum(prevSpend) + " → " + fmtNum(spend) + " (" + (depDiff >= 0 ? "+" : "") + fmtNum(depDiff) + ")</span></div></div>");
+            }
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: COURSES ============ */
+        function renderCourses(container) {
+            var h = [];
+            var mk = getMonthKey(State.activeDate);
+            var md = initMonthData(mk);
+            var total = coursesSpentForMonth(mk);
+            var reste = State.C.coursesMo - total;
+            var pct = State.C.coursesMo ? Math.min(100, Math.round((total / State.C.coursesMo) * 100)) : 0;
+
+            h.push("<div class='card'><h3>🛒 Courses — " + MNAMES[State.activeDate.getMonth()] + "</h3>");
+            h.push("<div class='grid-2'>");
+            h.push("<div class='text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Budget</span><h2 class='mono'>" + fmtNum(State.C.coursesMo) + "</h2></div>");
+            h.push("<div class='text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Reste</span><h2 class='mono' style='color:" + (reste >= 0 ? 'var(--green)' : 'var(--danger)') + "'>" + fmtNum(reste) + "</h2></div>");
+            h.push("</div>");
+            h.push("<div class='progress-bar'><div class='progress-fill' style='width:" + pct + "%'></div></div></div>");
+
+            h.push("<div class='card'><h3>Ajouter une course</h3>");
+            h.push("<input type='date' id='course-date'>");
+            h.push("<input type='text' id='course-desc' placeholder='Lieu / description'>");
+            h.push("<input type='number' id='course-amt' placeholder='Montant Ar'>");
+            h.push("<button onclick='addCourse()' style='width:100%;'>+ Ajouter</button></div>");
+
+            h.push("<div class='card'><h3>Liste des courses</h3>");
+            if (!md.courses.length) h.push("<p style='color:var(--text-muted);'>Aucune course ce mois.</p>");
+            for (var i = 0; i < md.courses.length; i++) {
+                var c = md.courses[i];
+                h.push("<div class='flex-between' style='padding:8px 0;border-bottom:1px solid var(--border);font-size:0.9em;'><span>" + escHtml(c.date || '') + " — " + escHtml(c.desc) + "</span><span>" + fmtAr(c.amt) + " <b style='color:var(--danger);cursor:pointer;margin-left:8px;' onclick='delCourse(" + i + ")'>✕</b></span></div>");
+            }
+            if (md.courses.length) h.push("<button class='outline' style='width:100%;margin-top:12px;' onclick='exportCoursesPDF()'>📄 Export PDF</button>");
+            h.push("</div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: REVENUS ============ */
+        function renderRevenus(container) {
+            var h = [];
+            var mk = getMonthKey(State.activeDate);
+            var md = initMonthData(mk);
+            var inc = incomeTotalForMonth(mk);
+            var dime = dimeForMonth(mk);
+            var fondGen = Math.max(0, inc - State.C.savings - dime);
+
+            h.push("<div class='card'><h3>💵 Revenus — " + MNAMES[State.activeDate.getMonth()] + "</h3>");
+            for (var i = 0; i < State.C.incRows.length; i++) {
+                h.push("<div style='margin-bottom:10px;'><label style='font-size:0.85em;color:var(--text-muted);'>" + escHtml(State.C.incRows[i]) + "</label><input type='number' value='" + (md.income[i] || '') + "' placeholder='0 Ar' onchange='setIncome(" + i + ",this.value)'></div>");
+            }
+            h.push("<div class='tranche-total'><span>Total revenus</span><span class='mono'>" + fmtNum(inc) + " Ar</span></div></div>");
+
+            h.push("<div class='card'><h3>💼 Fonds Général</h3>");
+            h.push("<div class='tranche-row'><span>Revenus totaux</span><span class='mono'>" + fmtNum(inc) + " Ar</span></div>");
+            h.push("<div class='tranche-row'><span>− Épargne</span><span class='mono'>− " + fmtNum(State.C.savings) + " Ar</span></div>");
+            h.push("<div class='tranche-row'><span>− Dîme</span><span class='mono'>− " + fmtNum(dime) + " Ar</span></div>");
+            h.push("<div class='tranche-total'><span>= Fonds général</span><span class='mono'>" + fmtNum(fondGen) + " Ar</span></div></div>");
+
+            h.push("<div class='card' style='background:var(--accent);color:#fff;'><h3 style='color:#fff;'>✝️ Dîme — Offrande</h3><h1 class='mono'>" + fmtNum(dime) + " Ar</h1><p>Projection annuelle: " + fmtNum(dime * 12) + " Ar</p></div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: STATS ============ */
+        function renderStats(container) {
+            var h = [];
+            var mk = getMonthKey(State.activeDate);
+            var inc = incomeTotalForMonth(mk), dime = dimeForMonth(mk), spend = spentTotalForMonth(mk);
+            var avgD = avgDaySpend(mk);
+            var hStats = habitsStatsForMonth(mk);
+            var hPct = hStats.total > 0 ? Math.round((hStats.done / hStats.total) * 100) : 0;
+            var budPct = inc > 0 ? Math.min(100, Math.round((spend / inc) * 100)) : 0;
+            var score = Math.round((hPct + Math.max(0, 100 - budPct)) / 2);
+            var doneTaches = 0;
+            ensureG();
+            for (var i = 0; i < State.G.taches.length; i++) if (State.G.taches[i].done) doneTaches++;
+
+            h.push("<div class='card text-center'><h3 style='justify-content:center;'>📈 Score global</h3><div class='score-circle'><strong style='font-size:2em;'>" + score + "%</strong></div></div>");
+            h.push("<div class='grid-2'>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Revenus</span><h3 class='mono' style='color:var(--green);'>" + fmtNum(inc) + "</h3></div>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Dépenses</span><h3 class='mono' style='color:var(--danger);'>" + fmtNum(spend) + "</h3></div>");
+            h.push("</div>");
+            h.push("<div class='card'><h3>📊 Résumé</h3>");
+            h.push("<div class='tranche-row'><span>Jours avec données</span><span class='mono'>" + daysWithDataCount(mk) + "</span></div>");
+            h.push("<div class='tranche-row'><span>Moy. réelle / jour</span><span class='mono'>" + (avgD ? fmtNum(avgD) + " Ar" : "—") + "</span></div>");
+            h.push("<div class='tranche-row'><span>Taux habitudes</span><span class='mono'>" + hPct + "%</span></div>");
+            h.push("<div class='tranche-row'><span>Tâches globales</span><span class='mono'>" + doneTaches + "/" + State.G.taches.length + "</span></div>");
+            h.push("</div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: TACHES (globales) ============ */
+        function renderTaches(container) {
+            ensureG();
+            var h = [];
+            var done = 0;
+            for (var i = 0; i < State.G.taches.length; i++) if (State.G.taches[i].done) done++;
+            var pct = State.G.taches.length ? Math.round((done / State.G.taches.length) * 100) : 0;
+
+            h.push("<div class='card'><h3>✅ Tâches globales</h3>");
+            h.push("<div class='progress-bar'><div class='progress-fill' style='width:" + pct + "%'></div></div>");
+            h.push("<p class='mono' style='font-size:0.85em;margin-top:5px;'>" + done + "/" + State.G.taches.length + "</p></div>");
+
+            h.push("<div class='card'><h3>Nouvelle tâche</h3>");
+            h.push("<input type='text' id='gt-name' placeholder='Titre…'>");
+            h.push("<div class='grid-2'>");
+            h.push("<select id='gt-prio'><option value='haute'>🔴 Haute</option><option value='moyenne' selected>🟡 Moyenne</option><option value='basse'>🟢 Basse</option></select>");
+            h.push("<input type='date' id='gt-due'>");
+            h.push("</div>");
+            h.push("<button onclick='addTache()' style='width:100%;'>+ Ajouter</button></div>");
+
+            h.push("<div class='card'><h3>Liste</h3>");
+            if (!State.G.taches.length) h.push("<p style='color:var(--text-muted);'>Aucune tâche.</p>");
+            for (var ti = 0; ti < State.G.taches.length; ti++) {
+                var t = State.G.taches[ti];
+                var cls = t.p === 'haute' ? 'urgent' : (t.p === 'moyenne' ? 'iscale' : '');
+                h.push("<div class='task-item " + (t.done ? 'done' : '') + " " + cls + "'><input type='checkbox' " + (t.done ? 'checked' : '') + " onchange='toggleTache(" + ti + ",this.checked)' style='width:auto;margin-right:10px;'><span class='tname'>" + escHtml(t.n) + (t.due ? " <small class='mono' style='color:var(--text-muted);'>(" + t.due + ")</small>" : "") + "</span><button class='small danger' onclick='delTache(" + ti + ")'>✕</button></div>");
+            }
+            h.push("</div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: OBJECTIFS ============ */
+        function renderObjectifs(container) {
+            ensureG();
+            var h = [];
+            h.push("<div class='card'><h3>Nouvel objectif</h3>");
+            h.push("<input type='text' id='obj-name' placeholder='Titre…'>");
+            h.push("<div class='grid-2'><input type='number' id='obj-target' placeholder='Cible'><input type='text' id='obj-unit' placeholder='Unité (Ar, km…)'></div>");
+            h.push("<button onclick='addObjectif()' style='width:100%;'>+ Ajouter</button></div>");
+
+            if (!State.G.objectifs.length) h.push("<div class='card'><p style='color:var(--text-muted);text-align:center;'>Aucun objectif.</p></div>");
+            for (var i = 0; i < State.G.objectifs.length; i++) {
+                var o = State.G.objectifs[i];
+                var pct = o.target > 0 ? Math.min(100, Math.round((o.current / o.target) * 100)) : 0;
+                h.push("<div class='obj-card'><div class='flex-between'><strong>" + escHtml(o.n) + "</strong><button class='small danger' onclick='delObjectif(" + i + ")'>✕</button></div>");
+                h.push("<div class='flex-between' style='font-size:0.85em;color:var(--text-muted);margin:6px 0;'><span>" + fmtNum(o.current) + " / " + fmtNum(o.target) + " " + escHtml(o.unit || '') + "</span><span class='mono'>" + pct + "%</span></div>");
+                h.push("<div class='progress-bar'><div class='progress-fill' style='width:" + pct + "%'></div></div>");
+                h.push("<div class='flex-between' style='margin-top:10px;gap:8px;'><input type='number' value='" + o.current + "' style='margin-bottom:0;' onchange='updObjectif(" + i + ",this.value)'></div></div>");
+            }
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: JOURNAL ============ */
+        function renderJournal(container) {
+            ensureG();
+            var h = [];
+            var dk = todayDateKey();
+            var entry = State.G.journal[dk] || '';
+            h.push("<div class='card'><h3>📝 " + State.activeDate.getDate() + " " + MNAMES[State.activeDate.getMonth()] + "</h3>");
+            h.push("<textarea id='journal-text' style='min-height:160px;' placeholder='Tes pensées, réflexions, gratitudes…'>" + escHtml(entry) + "</textarea>");
+            h.push("<button onclick='saveJournal()' style='width:100%;'>💾 Sauvegarder</button></div>");
+
+            var keys = Object.keys(State.G.journal).filter(function (k) { return k !== dk; }).sort().reverse().slice(0, 5);
+            if (keys.length) {
+                h.push("<div class='card'><h3>📖 Entrées précédentes</h3>");
+                for (var i = 0; i < keys.length; i++) {
+                    var txt = State.G.journal[keys[i]];
+                    h.push("<div style='padding:8px 0;border-bottom:1px solid var(--border);'><div class='mono' style='font-size:0.75em;color:var(--primary);'>" + keys[i] + "</div><div style='font-size:0.85em;color:var(--text-muted);'>" + escHtml(txt.slice(0, 120)) + (txt.length > 120 ? '…' : '') + "</div></div>");
+                }
+                h.push("</div>");
+            }
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: BIENETRE ============ */
+        function renderBienetre(container) {
+            var h = [];
+            var todayInt = State.activeDate.getDate();
+            var dayData = getDayData(todayInt);
+            var moods = ['😊', '😐', '😔', '😤', '😴', '🎉', '💪', '🤒'];
+
+            h.push("<div class='grid-2'>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Sommeil</span><h2 class='mono'>" + (dayData.sleep || 0) + "h</h2></div>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Eau</span><h2 class='mono'>" + (dayData.water || 0) + "</h2></div>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Sport</span><h2 class='mono'>" + (dayData.sport || 0) + "min</h2></div>");
+            h.push("<div class='card text-center'><span style='font-size:0.8em;color:var(--text-muted);'>Humeur</span><h2>" + (dayData.mood || '—') + "</h2></div>");
+            h.push("</div>");
+
+            h.push("<div class='card'><h3>Humeur du jour</h3><div class='mood-row'>");
+            for (var i = 0; i < moods.length; i++) {
+                h.push("<button class='mood-btn " + (dayData.mood === moods[i] ? 'sel' : '') + "' onclick='setBienetreField(" + todayInt + ",\"mood\",\"" + moods[i] + "\")'>" + moods[i] + "</button>");
+            }
+            h.push("</div></div>");
+
+            h.push("<div class='card'><h3>Détails</h3>");
+            h.push("<label style='font-size:0.85em;color:var(--text-muted);'>Sommeil (h)</label><input type='number' min='0' max='24' value='" + (dayData.sleep || '') + "' onchange='setBienetreField(" + todayInt + ",\"sleep\",this.value)'>");
+            h.push("<label style='font-size:0.85em;color:var(--text-muted);'>Eau (verres)</label><input type='number' min='0' value='" + (dayData.water || '') + "' onchange='setBienetreField(" + todayInt + ",\"water\",this.value)'>");
+            h.push("<label style='font-size:0.85em;color:var(--text-muted);'>Sport (min)</label><input type='number' min='0' value='" + (dayData.sport || '') + "' onchange='setBienetreField(" + todayInt + ",\"sport\",this.value)'>");
+            h.push("</div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: PLANNING ============ */
+        function renderPlanning(container) {
+            ensureG();
+            var h = [];
+            var dk = todayDateKey();
+            var typeColors = { work: 'var(--primary)', perso: 'var(--secondary)', health: 'var(--accent)', other: 'var(--gold)' };
+
+            h.push("<div class='card'><h3>Nouvel événement</h3>");
+            h.push("<input type='text' id='ev-name' placeholder='Titre…'>");
+            h.push("<div class='grid-2'><input type='date' id='ev-date' value='" + dk + "'><select id='ev-type'><option value='work'>💼 Travail</option><option value='perso'>🌿 Perso</option><option value='health'>💪 Santé</option><option value='other'>📌 Autre</option></select></div>");
+            h.push("<div class='grid-2'><input type='time' id='ev-start'><input type='time' id='ev-end'></div>");
+            h.push("<button onclick='addEvent()' style='width:100%;'>+ Ajouter</button></div>");
+
+            var upcoming = State.G.events.filter(function (e) { return e.date >= dk; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+            h.push("<div class='card'><h3>📅 Événements à venir</h3>");
+            if (!upcoming.length) h.push("<p style='color:var(--text-muted);'>Aucun événement.</p>");
+            for (var i = 0; i < State.G.events.length; i++) {
+                var ev = State.G.events[i];
+                if (ev.date < dk) continue;
+                h.push("<div class='event-row'><div class='event-dot' style='background:" + (typeColors[ev.type] || 'var(--gold)') + ";'></div><div style='flex:1;'><strong>" + escHtml(ev.n) + "</strong><br><span class='mono' style='font-size:0.8em;color:var(--text-muted);'>" + ev.date + (ev.start ? ' · ' + ev.start : '') + "</span></div><button class='small danger' onclick='delEvent(" + i + ")'>✕</button></div>");
+            }
+            h.push("</div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ PAGE: ADMIN ============ */
+        function renderAdmin(container) {
+            var h = [];
+            if (ADMIN_EMAILS.indexOf(State.email) < 0) {
+                container.innerHTML = "<div class='card text-center'><h3>🔒 Accès refusé</h3></div>";
+                return;
+            }
+            h.push("<div class='card'><h3>👑 Admin <span class='admin-badge'>ADMIN</span></h3>");
+            h.push("<div class='tranche-row'><span>Compte</span><span class='mono'>" + escHtml(State.email) + "</span></div>");
+            h.push("<div class='tranche-row'><span>Admins</span><span class='mono' style='font-size:0.8em;'>" + ADMIN_EMAILS.join(', ') + "</span></div>");
             h.push("</div>");
             container.innerHTML = h.join("");
         }
 
+        /* ============ PAGE: SETTINGS ============ */
+        var THEMES = [
+            { id: 'nature-vibrant', name: 'Nature', c1: '#679436', c2: '#a5be00' },
+            { id: 'ocean-ice', name: 'Ocean', c1: '#62B6CB', c2: '#CAE9FF' },
+            { id: 'deep-blue', name: 'Deep Blue', c1: '#778DA9', c2: '#0D1B2A' },
+            { id: 'terracotta', name: 'Terracotta', c1: '#C97C5D', c2: '#EED7C5' },
+            { id: 'neutral-nude', name: 'Nude', c1: '#E3D5CA', c2: '#D5BDAF' },
+            { id: 'forest', name: 'Forêt', c1: '#3A5A40', c2: '#A3B18A' },
+            { id: 'dark', name: 'Sombre', c1: '#BB86FC', c2: '#121212' },
+            { id: 'light', name: 'Clair', c1: '#6200EE', c2: '#F5F5F5' }
+        ];
+
+        function renderSettings(container) {
+            var h = [];
+            h.push("<div class='card settings-section'><h4>🎨 Thème visuel</h4><div class='theme-grid'>");
+            for (var ti = 0; ti < THEMES.length; ti++) {
+                var th = THEMES[ti];
+                h.push("<div class='theme-swatch " + (State.C.theme === th.id ? 'sel' : '') + "' onclick=\"updateTheme('" + th.id + "')\"><div class='swatch-dot'><span style='background:" + th.c1 + ";'></span><span style='background:" + th.c2 + ";'></span></div>" + th.name + "</div>");
+            }
+            h.push("</div>");
+            h.push("<div class='flex-between'><label>Taille du texte: <strong>" + (State.C.fontSize || 16) + "px</strong></label><div><button class='small outline' onclick='changeFontSize(-1)'>A-</button> <button class='small outline' onclick='changeFontSize(1)'>A+</button></div></div></div>");
+
+            h.push("<div class='card settings-section'><h4>⚙️ Budget général</h4>");
+            h.push("<label style='font-size:0.85em;color:var(--text-muted);'>Budget journalier (Ar)</label><input type='number' value='" + State.C.dayBudget + "' onchange='updateConfig(\"dayBudget\",this.value)'>");
+            h.push("<label style='font-size:0.85em;color:var(--text-muted);'>Budget courses/mois (Ar)</label><input type='number' value='" + State.C.coursesMo + "' onchange='updateConfig(\"coursesMo\",this.value)'>");
+            h.push("<label style='font-size:0.85em;color:var(--text-muted);'>Épargne mensuelle (Ar)</label><input type='number' value='" + State.C.savings + "' onchange='updateConfig(\"savings\",this.value)'>");
+            h.push("</div>");
+
+            function rowSection(title, field, isObj) {
+                h.push("<div class='card settings-section'><h4>" + title + "</h4>");
+                var rows = State.C[field];
+                for (var i = 0; i < rows.length; i++) {
+                    if (isObj) {
+                        h.push("<div class='cfg-row'><input type='text' value='" + escHtml(rows[i].n) + "' onchange='updRowField(\"" + field + "\"," + i + ",\"n\",this.value)' style='flex:2;'><input type='number' value='" + rows[i].v + "' onchange='updRowField(\"" + field + "\"," + i + ",\"v\",this.value)' style='flex:1;'><button class='small danger' onclick='delRow(\"" + field + "\"," + i + ")'>✕</button></div>");
+                    } else {
+                        h.push("<div class='cfg-row'><input type='text' value='" + escHtml(rows[i]) + "' onchange='updSimpleRow(\"" + field + "\"," + i + ",this.value)' style='flex:1;'><button class='small danger' onclick='delRow(\"" + field + "\"," + i + ")'>✕</button></div>");
+                    }
+                }
+                h.push("<button class='small outline' onclick='addRow(\"" + field + "\")'>+ Ajouter</button></div>");
+            }
+            rowSection("💵 Sources de revenus", "incRows", false);
+            rowSection("🏠 Charges fixes", "fixedRows", true);
+            rowSection("💅 Caring mensuel", "careRows", true);
+            rowSection("🍸 Hebdomadaire", "weekRows", true);
+            rowSection("🏆 Habitudes", "habitRows", false);
+
+            h.push("<div class='card settings-section'><h4>🗑 Données</h4><button class='danger' onclick='resetAllData()'>Effacer toutes les données</button></div>");
+
+            container.innerHTML = h.join("");
+        }
+
+        /* ============ RIGHT PANEL ============ */
         function renderRightPanel() {
             var rp = document.getElementById('right-panel');
             if (!rp) return;
+            ensureC(); ensureG();
             var h = [];
-            
-            // Grande carte bleue (Score global)
-            h.push("<div class='card' style='background: var(--primary); color: white; text-align:center;'>");
-            h.push("<h3 style='color:white; border:none;'>🌟 Aujourd'hui</h3>");
-            h.push("<p style='opacity:0.8;'>Score Bien-être</p>");
-            h.push("<h1 style='font-size:3.5rem; margin:10px 0;'>85</h1>");
-            h.push("</div>");
-
-            // Carte Budget Resume
+            var mk = getMonthKey(State.activeDate);
             var todayInt = State.activeDate.getDate();
             var dayData = getDayData(todayInt);
             var env = State.C.dayBudget || 20000;
-            var spent = 0;
-            if (dayData.spendings) {
-                for (var j=0; j<dayData.spendings.length; j++) spent += Number(dayData.spendings[j].amt || 0);
-            }
+            var spent = daySpentTotal(todayInt, mk);
+
+            var hDone = 0;
+            for (var i = 0; i < dayData.habits.length; i++) if (dayData.habits[i]) hDone++;
+            var hTotal = State.C.habitRows.length;
+            var hPct = hTotal > 0 ? Math.round((hDone / hTotal) * 100) : 0;
+            var budPct = env > 0 ? Math.max(0, 100 - Math.min(100, Math.round((spent / env) * 100))) : 100;
+            var score = Math.round((hPct + budPct) / 2);
+
+            h.push("<div class='card' style='background: var(--primary); color: white; text-align:center;'>");
+            h.push("<h3 style='color:white; border:none;justify-content:center;'>🌟 Aujourd'hui</h3>");
+            h.push("<p style='opacity:0.8;'>Score Bien-être</p>");
+            h.push("<h1 style='font-size:3.5rem; margin:10px 0;'>" + score + "</h1>");
+            h.push("</div>");
+
             h.push("<div class='card'><h3>📊 Résumé Budget</h3>");
             h.push("<div class='score-circle'><span style='font-size:0.8em;'>Dépensé</span><strong class='mono'>" + fmtAr(spent) + "</strong></div>");
             h.push("<p class='text-center' style='font-size:0.9em;'>Sur " + fmtAr(env) + " prévus</p>");
             h.push("</div>");
 
-            // Tâches
-            h.push("<div class='card'><h3>📝 Tâches (GTV/iScale)</h3>");
-            h.push("<div class='task-item'>Réunion de production (GTV)</div>");
-            h.push("<div class='task-item iscale'>Mise à jour base de données (iScale)</div>");
-            h.push("<div class='task-item'>Appeler fournisseur</div>");
+            h.push("<div class='card'><h3>🏆 Habitudes</h3>");
+            for (var hh = 0; hh < State.C.habitRows.length && hh < 6; hh++) {
+                var on = !!dayData.habits[hh];
+                h.push("<div class='task-item " + (on ? 'done' : '') + "' style='cursor:pointer;' onclick='toggleHabitFromPanel(" + todayInt + "," + hh + ")'><span class='tname'>" + escHtml(State.C.habitRows[hh]) + "</span><span>" + (on ? '✓' : '') + "</span></div>");
+            }
             h.push("</div>");
+
+            var lateTasks = State.G.taches.filter(function (t) { return !t.done && t.due && t.due < todayDateKey(); });
+            if (lateTasks.length) {
+                h.push("<div class='card' style='border:2px solid var(--danger);'><h3 style='color:var(--danger);'>⚠️ En retard</h3>");
+                for (var lt = 0; lt < Math.min(3, lateTasks.length); lt++) h.push("<div class='task-item urgent'>" + escHtml(lateTasks[lt].n) + "</div>");
+                h.push("</div>");
+            }
 
             rp.innerHTML = h.join("");
         }
+        function toggleHabitFromPanel(dayInt, hidx) {
+            var dayData = getDayData(dayInt);
+            dayData.habits[hidx] = !dayData.habits[hidx];
+            triggerSave();
+            if (State.activePage === 'jour') nav('jour'); else renderRightPanel();
+        }
 
-        function setDate(d) { State.activeDate.setDate(d); nav('jour'); }
-        
+        /* ============ ACTIONS: JOUR ============ */
         function addSpending(dayInt) {
             var desc = document.getElementById('dep-desc').value;
             var amt = Number(document.getElementById('dep-amt').value);
             if (!desc || amt <= 0) return;
-            var dayData = getDayData(dayInt);
-            dayData.spendings.push({desc: desc, amt: amt});
+            getDayData(dayInt).spendings.push({ desc: desc, amt: amt });
             triggerSave(); nav('jour');
         }
         function delSpending(dayInt, idx) {
@@ -497,25 +1112,181 @@
         function toggleHabit(dayInt, hidx, val) {
             getDayData(dayInt).habits[hidx] = val;
             triggerSave();
+            renderRightPanel();
         }
-        function updateTheme(val) { State.C.theme = val; applyTheme(); triggerSave(); }
+        function addDayTask(dayInt) {
+            var inp = document.getElementById('dtask-name');
+            if (!inp || !inp.value.trim()) return;
+            getDayData(dayInt).tasks.push({ n: inp.value.trim(), done: false });
+            triggerSave(); nav('jour');
+        }
+        function toggleDayTask(dayInt, idx, val) {
+            getDayData(dayInt).tasks[idx].done = val;
+            triggerSave();
+        }
+        function delDayTask(dayInt, idx) {
+            getDayData(dayInt).tasks.splice(idx, 1);
+            triggerSave(); nav('jour');
+        }
+        function setDayNotes(dayInt, val) {
+            getDayData(dayInt).notes = val;
+            triggerSave();
+        }
+
+        /* ============ ACTIONS: COURSES ============ */
+        function addCourse() {
+            var date = document.getElementById('course-date').value;
+            var desc = document.getElementById('course-desc').value;
+            var amt = Number(document.getElementById('course-amt').value);
+            if (!desc || amt <= 0) return;
+            var mk = getMonthKey(State.activeDate);
+            initMonthData(mk).courses.push({ date: date, desc: desc, amt: amt });
+            triggerSave(); nav('courses');
+        }
+        function delCourse(idx) {
+            var mk = getMonthKey(State.activeDate);
+            initMonthData(mk).courses.splice(idx, 1);
+            triggerSave(); nav('courses');
+        }
+        function exportCoursesPDF() {
+            var mk = getMonthKey(State.activeDate);
+            var md = initMonthData(mk);
+            var w = window.open('', '_blank');
+            if (!w) { toast('Bloqué par le navigateur'); return; }
+            var total = coursesSpentForMonth(mk);
+            var html = "<html><head><title>Courses</title><style>body{font-family:sans-serif;padding:24px}table{width:100%;border-collapse:collapse;margin-top:12px}td,th{border:1px solid #ddd;padding:8px;font-size:13px;text-align:left}th{background:#679436;color:#fff}</style></head><body>";
+            html += "<h2>🛒 Courses — " + MNAMES[State.activeDate.getMonth()] + " " + State.activeDate.getFullYear() + "</h2>";
+            html += "<p>Budget: " + fmtAr(State.C.coursesMo) + " | Dépensé: " + fmtAr(total) + "</p>";
+            html += "<table><tr><th>Date</th><th>Description</th><th>Montant</th></tr>";
+            for (var i = 0; i < md.courses.length; i++) {
+                var c = md.courses[i];
+                html += "<tr><td>" + escHtml(c.date || '') + "</td><td>" + escHtml(c.desc) + "</td><td>" + fmtAr(c.amt) + "</td></tr>";
+            }
+            html += "</table></body></html>";
+            w.document.write(html);
+            w.document.close();
+            setTimeout(function () { w.print(); }, 300);
+        }
+
+        /* ============ ACTIONS: REVENUS ============ */
+        function setIncome(idx, val) {
+            var mk = getMonthKey(State.activeDate);
+            var md = initMonthData(mk);
+            md.income[idx] = Number(val) || 0;
+            triggerSave();
+        }
+
+        /* ============ ACTIONS: TACHES ============ */
+        function addTache() {
+            ensureG();
+            var name = document.getElementById('gt-name').value;
+            if (!name || !name.trim()) return;
+            State.G.taches.unshift({ n: name.trim(), p: document.getElementById('gt-prio').value, due: document.getElementById('gt-due').value, done: false });
+            triggerSave(); nav('taches');
+        }
+        function toggleTache(idx, val) {
+            State.G.taches[idx].done = val;
+            triggerSave(); renderRightPanel();
+        }
+        function delTache(idx) {
+            State.G.taches.splice(idx, 1);
+            triggerSave(); nav('taches');
+        }
+
+        /* ============ ACTIONS: OBJECTIFS ============ */
+        function addObjectif() {
+            ensureG();
+            var name = document.getElementById('obj-name').value;
+            if (!name || !name.trim()) return;
+            var target = Number(document.getElementById('obj-target').value) || 100;
+            var unit = document.getElementById('obj-unit').value;
+            State.G.objectifs.unshift({ n: name.trim(), target: target, current: 0, unit: unit });
+            triggerSave(); nav('objectifs');
+        }
+        function updObjectif(idx, val) {
+            State.G.objectifs[idx].current = Number(val) || 0;
+            triggerSave(); nav('objectifs');
+        }
+        function delObjectif(idx) {
+            State.G.objectifs.splice(idx, 1);
+            triggerSave(); nav('objectifs');
+        }
+
+        /* ============ ACTIONS: JOURNAL ============ */
+        function saveJournal() {
+            ensureG();
+            var txt = document.getElementById('journal-text').value;
+            State.G.journal[todayDateKey()] = txt;
+            triggerSave();
+            toast('📝 Sauvegardé');
+        }
+
+        /* ============ ACTIONS: BIENETRE ============ */
+        function setBienetreField(dayInt, field, val) {
+            var dd = getDayData(dayInt);
+            if (field === 'mood') dd.mood = val;
+            else dd[field] = Number(val) || 0;
+            triggerSave();
+            if (State.activePage === 'bienetre') nav('bienetre');
+            else if (State.activePage === 'jour') nav('jour');
+        }
+
+        /* ============ ACTIONS: PLANNING ============ */
+        function addEvent() {
+            ensureG();
+            var name = document.getElementById('ev-name').value;
+            if (!name || !name.trim()) return;
+            State.G.events.unshift({
+                n: name.trim(),
+                date: document.getElementById('ev-date').value || todayDateKey(),
+                start: document.getElementById('ev-start').value,
+                end: document.getElementById('ev-end').value,
+                type: document.getElementById('ev-type').value
+            });
+            triggerSave(); nav('planning');
+        }
+        function delEvent(idx) {
+            State.G.events.splice(idx, 1);
+            triggerSave(); nav('planning');
+        }
+
+        /* ============ ACTIONS: SETTINGS ============ */
+        function updateTheme(val) { State.C.theme = val; applyTheme(); triggerSave(); nav('settings'); }
         function updateConfig(key, val) { State.C[key] = Number(val); triggerSave(); }
-        
         function changeFontSize(delta) {
             var current = State.C.fontSize || 16;
             var newVal = current + delta;
-            if(newVal >= 12 && newVal <= 26) {
+            if (newVal >= 12 && newVal <= 26) {
                 State.C.fontSize = newVal;
-                applyTheme();
-                triggerSave();
-                nav('settings');
+                applyTheme(); triggerSave(); nav('settings');
             }
         }
-
-        // Mocks pour éviter le crash des boutons non implémentés complètement
-        function renderMois(c) { c.innerHTML = "<div class='card'><h3>📅 Mois</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
-        function renderCourses(c) { c.innerHTML = "<div class='card'><h3>🛒 Courses</h3><p>Page en cours de portage vers la nouvelle UI.</p></div>"; }
-
+        function addRow(field) {
+            ensureC();
+            if (field === 'incRows' || field === 'habitRows') State.C[field].push('Nouveau');
+            else State.C[field].push({ n: 'Nouveau', v: 0 });
+            triggerSave(); nav('settings');
+        }
+        function delRow(field, idx) {
+            State.C[field].splice(idx, 1);
+            triggerSave(); nav('settings');
+        }
+        function updRowField(field, idx, key, val) {
+            State.C[field][idx][key] = key === 'v' ? (Number(val) || 0) : val;
+            triggerSave();
+        }
+        function updSimpleRow(field, idx, val) {
+            State.C[field][idx] = val;
+            triggerSave();
+        }
+        function resetAllData() {
+            if (!confirm('Effacer toutes les données de ce compte ?')) return;
+            State.D = {};
+            State.G = JSON.parse(JSON.stringify(defaultG));
+            triggerSave();
+            nav('jour');
+            toast('Données effacées');
+        }
     </script>
 </body>
 </html>
